@@ -41,7 +41,9 @@ def extract_rules(text):
             'remediation': extract_section(rule_text, 'Remediation:', 'Default Value:'),
             'default_value': extract_section(rule_text, 'Default Value:', 'References:'),
             'references': extract_section(rule_text, 'References:', 'CIS Controls:'),
-            'cis_controls': extract_section(rule_text, 'CIS Controls:', '$')
+            'cis_controls': extract_section(rule_text, 'CIS Controls:', '$'),
+            'audit_command':extract_audit_command(extract_section(rule_text, 'Audit:', 'Remediation:')),
+            'remediation_command':extract_remediation_commands(extract_section(rule_text, 'Remediation:', 'Default Value:'))
         }
         rules.append(rule)
     
@@ -57,16 +59,96 @@ def extract_section(text, start_marker, end_marker):
         return text[start:].strip()
     return text[start:end].strip()
 
+
+def extract_audit_command(text):
+
+    # If no code block, look for lines starting with '#' or '$'
+    commands = re.findall(r'^[#$]\s*(.+)$', text, re.MULTILINE)
+    if commands:
+        return '\n'.join(commands)
+    
+    return ""
+
+# def extract_audit_command(text):
+
+#     # Extract commands from code blocks
+#     code_blocks = re.findall(r'```(?:\w+)?\s*(.*?)```', text, re.DOTALL)
+    
+#     if code_blocks:
+#         # If code blocks are found, process them
+#         commands = []
+#         for block in code_blocks:
+#             # Split the block into lines and process each line
+#             lines = block.strip().split('\n')
+#             current_command = ""
+#             for line in lines:
+#                 line = line.strip()
+#                 if line and not line.startswith('#') and not line.startswith('echo') and not line.startswith('}'):
+#                     if line.endswith('\\'):
+#                         current_command += line[:-1] + " "
+#                     else:
+#                         current_command += line
+#                         if current_command:
+#                             commands.append(current_command.strip())
+#                             current_command = ""
+#             if current_command:
+#                 commands.append(current_command.strip())
+#     else:
+#         # If no code blocks, look for lines starting with '#', '$', or common commands
+#         command_pattern = r'^(?:[#$]\s*|(?:chmod|chown|find|stat|cat|grep|awk|sed)\s+)(.+)$'
+#         commands = re.findall(command_pattern, text, re.MULTILINE)
+
+#     # Remove duplicates while preserving order
+#     seen = set()
+#     commands = [x for x in commands if not (x in seen or seen.add(x))]
+
+#     return commands
+
+def extract_remediation_commands(text):
+    # Extract commands
+    commands = []
+    command_patterns = [
+        r'#\s*(.*?)(?=\n|$)',  # Lines starting with #
+        r'\$\s*(.*?)(?=\n|$)',  # Lines starting with $
+        r'`(.*?)`',  # Text enclosed in backticks
+        r'^\s*(chmod|chown|find|stat).*?(?=\n|$)',  # Common Linux commands
+    ]
+
+    for pattern in command_patterns:
+        matches = re.findall(pattern, text, re.MULTILINE)
+        commands.extend(matches)
+
+    # Clean up commands
+    commands = [cmd.strip() for cmd in commands if cmd.strip()]
+    
+    # Handle multi-line commands
+    final_commands = []
+    current_command = ""
+    for cmd in commands:
+        if cmd.endswith('\\'):
+            current_command += cmd[:-1] + " "
+        else:
+            current_command += cmd
+            final_commands.append(current_command.strip())
+            current_command = ""
+    
+    if current_command:
+        final_commands.append(current_command.strip())
+
+    return final_commands
+
 path = 'system_file_permissions.pdf'
 document_content = extract_text_from_pdf(path)
 extracted_rules = extract_rules(document_content)
 
 # Print the extracted rules
 for rule in extracted_rules:
+    # print(rule)
     print(f"Rule ID: {rule['id']}")
-    print(f"Title: {rule['title']}")
-    print(f"Profile Applicability: {rule['profile_applicability']}")
-    print(f"Description: {rule['description'][:100]}...")  # Print first 100 characters
-    print(f"Audit: {rule['audit']}")
-    print(f"remediation: {rule['remediation']}")
+    # print(f"Title: {rule['title']}")
+    # print(f"Profile Applicability: {rule['profile_applicability']}")
+    # print(f"Description: {rule['description'][:100]}...")  # Print first 100 characters
+    # print(f"Audit: {rule['audit']}")
+    print(f"Audit command: {rule['audit_command']}")
+    print(f"Remediation command: {rule['remediation_command']}")
     print("=" * 50)
