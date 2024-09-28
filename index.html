@@ -1,0 +1,383 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Compliance Script Generator</title>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+      <link rel="icon" href="favicon.ico" type="image/x-icon">
+      <style>
+        body {
+          font-family: 'Poppins', sans-serif;
+          background: linear-gradient(135deg, #6e8efb, #a777e3);
+          color: #333;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+        }
+
+        .container {
+          background-color: rgba(255, 255, 255, 0.9);
+          padding: 40px;
+          border-radius: 20px;
+          width: 90%;
+          max-width: 500px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+          text-align: center;
+          backdrop-filter: blur(10px);
+          transition: all 0.3s ease;
+        }
+
+        h1 {
+          font-size: 28px;
+          color: #4a4a4a;
+          margin-bottom: 30px;
+          font-weight: 600;
+        }
+
+        .file-input-container {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          margin-bottom: 20px;
+        }
+
+        .file-input-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          margin-bottom: 10px;
+        }
+
+        .file-input-wrapper {
+          position: relative;
+          overflow: hidden;
+          display: inline-block;
+          background-color: #f0f0f0;
+          border: 2px solid #e0e0e0;
+          border-radius: 12px;
+          padding: 8px 12px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .file-input-wrapper:hover {
+          background-color: #e8e8e8;
+        }
+
+        .file-input-wrapper input[type="file"] {
+          font-size: 100px;
+          position: absolute;
+          left: 0;
+          top: 0;
+          opacity: 0;
+          cursor: pointer;
+        }
+
+        .file-input-wrapper::after {
+          content: 'Browse';
+          display: inline-block;
+          font-size: 14px;
+        }
+
+        #upload-button {
+          padding: 10px 20px;
+          margin-left: 10px;
+        }
+
+        #file-name {
+          font-size: 14px;
+          color: #666;
+          margin-top: 5px;
+          word-break: break-all;
+          text-align: left;
+        }
+
+        select {
+          padding: 12px;
+          width: 100%;
+          margin-bottom: 20px;
+          border: 2px solid #e0e0e0;
+          border-radius: 12px;
+          font-size: 16px;
+          transition: border-color 0.3s ease;
+        }
+
+        select:focus {
+          outline: none;
+          border-color: #6e8efb;
+        }
+
+        button {
+          background-color: #6e8efb;
+          color: white;
+          padding: 14px;
+          border: none;
+          border-radius: 12px;
+          font-size: 16px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-weight: 600;
+        }
+
+        button:hover {
+          background-color: #5c7cfa;
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(110, 142, 251, 0.4);
+        }
+
+        #generate-full-script,
+        #generate-rule-script,
+        #download-script {
+          width: 100%;
+          margin-bottom: 15px;
+        }
+
+        #script-output {
+          background-color: #f7f7f7;
+          padding: 20px;
+          border-radius: 12px;
+          margin-top: 30px;
+          white-space: pre-wrap;
+          text-align: left;
+          font-family: 'Courier New', monospace;
+          max-height: 200px;
+          overflow-y: auto;
+          border: 2px solid #e0e0e0;
+        }
+
+        #download-script {
+          background-color: #4CAF50;
+        }
+
+        #download-script:hover {
+          background-color: #45a049;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container > * {
+          animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .container > *:nth-child(1) { animation-delay: 0.1s; }
+        .container > *:nth-child(2) { animation-delay: 0.2s; }
+        .container > *:nth-child(3) { animation-delay: 0.3s; }
+        .container > *:nth-child(4) { animation-delay: 0.4s; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>Script Generator</h1>
+
+        <form id="upload-form">
+          <div class="file-input-container">
+            <div class="file-input-row">
+              <div class="file-input-wrapper">
+                <input type="file" id="file" name="file" accept=".pdf,.xml" required>
+              </div>
+              <button type="button" id="upload-button">Upload</button>
+            </div>
+            <div id="file-name"></div>
+          </div>
+          <button type="button" id="generate-full-script">Generate Full Script</button>
+        </form>
+
+        <select id="rule-number">
+          <option value="">Select Rule Number</option>
+        </select>
+        <select id="sub-index" style="display: none;">
+          <option value="">Select Sub-Index</option>
+        </select>
+        <select id="final-index" style="display: none;">
+          <option value="">Select Final Index</option>
+        </select>
+        <button type="button" id="generate-rule-script">Generate Selected Rule Script</button>
+
+        <div id="script-output" hidden></div>
+        <button type="button" id="download-script" hidden>Download Script</button>
+      </div>
+
+      <script>
+        const fileInput = document.getElementById('file');
+        const uploadButton = document.getElementById('upload-button');
+        const generateFullScriptButton = document.getElementById('generate-full-script');
+        const generateRuleScriptButton = document.getElementById('generate-rule-script');
+        const scriptOutputDiv = document.getElementById('script-output');
+        const downloadScriptButton = document.getElementById('download-script');
+        const ruleNumberSelect = document.getElementById('rule-number');
+        const subIndexSelect = document.getElementById('sub-index');
+        const finalIndexSelect = document.getElementById('final-index');
+        const fileNameDisplay = document.getElementById('file-name');
+
+        fileInput.addEventListener('change', function() {
+          if (this.files && this.files.length > 0) {
+            fileNameDisplay.textContent = `Selected file: ${this.files[0].name}`;
+          } else {
+            fileNameDisplay.textContent = '';
+          }
+        });
+
+        function populateRuleNumbers() {
+  fetch('http://localhost:8000/rules/query')
+    .then(response => response.json())
+    .then(data => {
+      ruleNumberSelect.innerHTML = '<option value="">Select Rule Number</option>';
+      data.queried_rules.forEach(rule => {
+        const option = document.createElement('option');
+        option.value = rule.id;  // Updated to use 'id' instead of 'number'
+        option.text = rule.description;  // Display the rule description
+        ruleNumberSelect.appendChild(option);
+      });
+    })
+    .catch(error => console.error('Error fetching rules:', error));
+}
+
+
+ruleNumberSelect.addEventListener('change', function() {
+  const selectedRuleId = this.value;
+  if (selectedRuleId) {
+    fetch(`http://localhost:8000/rules/${selectedRuleId}/sub`)
+      .then(response => response.json())
+      .then(data => {
+        console.log('Sub-rules fetched:', data);  // Log sub-rules data to check
+        subIndexSelect.innerHTML = '<option value="">Select Sub-Index</option>';
+        data.sub_rules.forEach(subRule => {
+          const option = document.createElement('option');
+          option.value = subRule.sub_id;  // Use sub_id for the value
+          option.text = subRule.description;  // Display the sub-rule description
+          subIndexSelect.appendChild(option);
+        });
+        subIndexSelect.style.display = 'block';
+      })
+      .catch(error => {
+        console.error('Error fetching sub-indexes:', error);
+        alert('Error fetching sub-rules');
+      });
+  } else {
+    subIndexSelect.style.display = 'none';
+  }
+});
+
+
+        subIndexSelect.addEventListener('change', function() {
+          const selectedRule = ruleNumberSelect.value;
+          const selectedSubIndex = this.value;
+          if (selectedSubIndex) {
+            fetch(`http://localhost:8000/rules/${selectedRule}/indexes/${selectedSubIndex}`)
+              .then(response => response.json())
+              .then(data => {
+                finalIndexSelect.innerHTML = '<option value="">Select Final Index</option>';
+                data.forEach(index => {
+                  const option = document.createElement('option');
+                  option.value = index;
+                  option.text = index;
+                  finalIndexSelect.appendChild(option);
+                });
+                finalIndexSelect.style.display = 'block';
+              })
+              .catch(error => console.error('Error fetching final indexes:', error));
+          } else {
+            finalIndexSelect.style.display = 'none';
+          }
+        });
+
+        uploadButton.addEventListener('click', () => {
+          if (fileInput.files.length > 0) {
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            fetch('http://localhost:8000/upload', {
+              method: 'POST',
+              body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+              alert('File uploaded successfully!');
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('Error uploading file.');
+            });
+          } else {
+            alert('Please select a file to upload.');
+          }
+        });
+
+        generateFullScriptButton.addEventListener('click', () => {
+            if (fileInput.files.length > 0) {
+              const formData = new FormData();
+              formData.append('file', fileInput.files[0]);
+
+              fetch('http://localhost:8000/scripts/generate/full', {
+                method: 'POST',
+                body: formData
+              })
+                .then(response => response.json())
+                .then(data => {
+                  const script = data.combined_script;
+                  showScriptOutput(script);
+                })
+                .catch(error => console.error('Error generating full script:', error));
+            } else {
+              alert('Please upload a file first.');
+            }
+          });
+
+
+      generateRuleScriptButton.addEventListener('click', () => {
+          const selectedRule = ruleNumberSelect.value;
+          const selectedSubIndex = subIndexSelect.value;
+          
+          if (selectedRule && selectedSubIndex) {
+            const subIds = [parseFloat(`${selectedRule}.${selectedSubIndex}`)];  // Combine rule and sub_id
+
+            fetch('http://localhost:8000/scripts/generate/query/sub', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ sub_ids: subIds })  // Send sub_ids as an array
+            })
+              .then(response => response.json())
+              .then(data => {
+                const script = data.generated_scripts.join('\n');  // Join multiple scripts if available
+                showScriptOutput(script);
+              })
+              .catch(error => console.error('Error generating script:', error));
+          } else {
+            alert('Please select both a rule and sub-index.');
+          }
+        });
+
+        function showScriptOutput(script) {
+          scriptOutputDiv.hidden = false;
+          downloadScriptButton.hidden = false;
+          scriptOutputDiv.textContent = script;
+
+          downloadScriptButton.addEventListener('click', () => {
+            downloadScript(script);
+          });
+        }
+
+        function downloadScript(script) {
+          const blob = new Blob([script], { type: 'text/plain' });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = url;
+          a.download = 'compliance_script.sh';
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+        }
+
+        window.onload = populateRuleNumbers;
+      </script>
+    </body>
+    </html>
