@@ -38,7 +38,7 @@ def extract_rules(text):
             'description': extract_section(rule_text, 'Description:', 'Rationale:'),
             'rationale': extract_section(rule_text, 'Rationale:', 'Audit:'),
             'audit': extract_section(rule_text, 'Audit:', 'Remediation:'),
-            'remediation': extract_section(rule_text, 'Remediation:', 'Default Value:'),
+            'remediation': extract_section(rule_text, 'Remediation:', 'References:','Default Value:'),
             'default_value': extract_section(rule_text, 'Default Value:', 'References:'),
             'references': extract_section(rule_text, 'References:', 'CIS Controls:'),
             'cis_controls': extract_section(rule_text, 'CIS Controls:', '$'),
@@ -49,89 +49,83 @@ def extract_rules(text):
     
     return rules
 
-def extract_section(text, start_marker, end_marker):
-    start = text.find(start_marker)
-    if start == -1:
-        return ""
-    start += len(start_marker)
-    end = text.find(end_marker, start)
-    if end == -1:
-        return text[start:].strip()
-    return text[start:end].strip()
+def extract_section(text, start_label, *end_labels):
+    # Combine all possible end labels into a single pattern
+    end_labels_pattern = '|'.join([re.escape(label) for label in end_labels])
+    # Create a regex pattern to capture text between start and any of the end labels
+    pattern = rf'{re.escape(start_label)}(.*?)(?={end_labels_pattern}|\Z)'
+    match = re.search(pattern, text, re.DOTALL)
+    if match:
+        return match.group(1).strip()
+    return ""
 
 
 def extract_audit_command(text):
-
-    # If no code block, look for lines starting with '#' or '$'
-    commands = re.findall(r'^[#$]\s*(.+)$', text, re.MULTILINE)
-    if commands:
-        return '\n'.join(commands)
-    
-    return ""
-
-# def extract_audit_command(text):
-
-#     # Extract commands from code blocks
-#     code_blocks = re.findall(r'```(?:\w+)?\s*(.*?)```', text, re.DOTALL)
-    
-#     if code_blocks:
-#         # If code blocks are found, process them
-#         commands = []
-#         for block in code_blocks:
-#             # Split the block into lines and process each line
-#             lines = block.strip().split('\n')
-#             current_command = ""
-#             for line in lines:
-#                 line = line.strip()
-#                 if line and not line.startswith('#') and not line.startswith('echo') and not line.startswith('}'):
-#                     if line.endswith('\\'):
-#                         current_command += line[:-1] + " "
-#                     else:
-#                         current_command += line
-#                         if current_command:
-#                             commands.append(current_command.strip())
-#                             current_command = ""
-#             if current_command:
-#                 commands.append(current_command.strip())
-#     else:
-#         # If no code blocks, look for lines starting with '#', '$', or common commands
-#         command_pattern = r'^(?:[#$]\s*|(?:chmod|chown|find|stat|cat|grep|awk|sed)\s+)(.+)$'
-#         commands = re.findall(command_pattern, text, re.MULTILINE)
-
-#     # Remove duplicates while preserving order
-#     seen = set()
-#     commands = [x for x in commands if not (x in seen or seen.add(x))]
-
-#     return commands
-
-def extract_remediation_commands(text):
-    # Extract commands
-    commands = []
+    # Patterns to detect audit commands and script blocks
     command_patterns = [
-        r'#\s*(.*?)(?=\n|$)',  # Lines starting with #
-        r'\$\s*(.*?)(?=\n|$)',  # Lines starting with $
-        r'`(.*?)`',  # Text enclosed in backticks
-        r'^\s*(chmod|chown|find|stat).*?(?=\n|$)',  # Common Linux commands
+        r'^\s*#.*$',  # Lines starting with '#'
+        r'^\s*\$.*$',  # Lines starting with '$'
+        r'(?s)```bash(.*?)```',  # Code block in markdown format (```bash ... ```)
+        r'(?s)(#!/bin/bash|#!/usr/bin/env bash)(.*?)(?=\n\S|\Z)',  # Script block starting with shebang
+        r'(?s){\s*(.*?)\s*}',  # Block enclosed in curly braces
     ]
 
+    commands = []
+
+    # Loop through each pattern and find matches
     for pattern in command_patterns:
         matches = re.findall(pattern, text, re.MULTILINE)
         commands.extend(matches)
 
-    # Clean up commands
+    # Clean up extracted commands and join them together
+    cleaned_commands = []
+    for cmd in commands:
+        if isinstance(cmd, tuple):  # Handle groups in regex
+            cleaned_commands.append(''.join(cmd).strip())
+        else:
+            cleaned_commands.append(cmd.strip())
+
+    # Return all matched commands, joined by newlines
+    return '\n'.join(cleaned_commands) if cleaned_commands else ""
+
+
+def extract_remediation_commands(text):
+    # Extract commands
+    commands = []
+    
+    # Command patterns for scripts and standalone commands
+    command_patterns = [
+        r'#\s*(.*?)(?=\n|$)',  # Lines starting with #
+        r'\$\s*(.*?)(?=\n|$)',  # Lines starting with $
+        r'`([^`]+)`',  # Text enclosed in backticks
+        r'^\s*(chmod|chown|find|stat|mkdir|rm|cp|mv|ln|touch|cat)\s+.*?(?=\n|$)',  # Common Linux commands
+        r'(?s)(#!/bin/bash|#!/usr/bin/env bash|{.*?})',  # Shell script blocks
+        r'(?s)#.*?\n\s*{.*?}\n'  # Match inline comments followed by script blocks
+    ]
+
+    # Find all matches for each pattern
+    for pattern in command_patterns:
+        matches = re.findall(pattern, text, re.MULTILINE)
+        commands.extend(matches)
+
+    # Clean up extracted commands
     commands = [cmd.strip() for cmd in commands if cmd.strip()]
     
-    # Handle multi-line commands
+    # Handle multi-line commands (where lines end with '\')
     final_commands = []
     current_command = ""
+    
     for cmd in commands:
         if cmd.endswith('\\'):
-            current_command += cmd[:-1] + " "
+            # Continuation of a multi-line command
+            current_command += cmd[:-1].strip() + " "
         else:
-            current_command += cmd
+            # Complete command (single-line or the last part of a multi-line command)
+            current_command += cmd.strip()
             final_commands.append(current_command.strip())
-            current_command = ""
+            current_command = ""  # Reset for next command
     
+    # If there is any command left in current_command, append it
     if current_command:
         final_commands.append(current_command.strip())
 
@@ -149,6 +143,7 @@ for rule in extracted_rules:
     # print(f"Profile Applicability: {rule['profile_applicability']}")
     # print(f"Description: {rule['description'][:100]}...")  # Print first 100 characters
     # print(f"Audit: {rule['audit']}")
-    print(f"Audit command: {rule['audit_command']}")
-    print(f"Remediation command: {rule['remediation_command']}")
+    print(f"Remediation: {rule['remediation']}")
+    # print(f"Audit command: {rule['audit_command']}")
+    # print(f"Remediation command: {rule['remediation_command']}")
     print("=" * 50)
