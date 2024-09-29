@@ -30,7 +30,8 @@ def extract_rules(text,section_key):
     2.1:r'(2\.(?:\d+\.){1,3}\d+)\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(2\.(?:\d+\.){1,3}\d+|$))',
     2.2:r'(2\.3\.(?:1\.\d|2\.\d|3\.\d)|2\.4\.(?:1\.[1-8]|2\.1))\b\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(2\.3\.(?:1\.\d|2\.\d|3\.\d)|2\.4\.(?:1\.[1-8]|2\.1))|$)',
     3  :r'(3\.(?:1\.\d+|2\.\d+|3\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(3\.(?:1\.\d+|2\.\d+|3\.\d+)|$))',
-    4  :r'(4\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(4\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+)|$))',
+    4.1:r'(4\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(4\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+)|$))',
+    4.2:r'(4\.\d+\.\d+\.\d+)\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(4\.\d+\.\d+\.\d+|$))',
     5  :r'(5\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(5\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+)|$))',
     6  :r'(6\.(?:1\.\d+|2\.\d+|3\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(6\.(?:1\.\d+|2\.\d+|3\.\d+)|$))',
     7  :r'(7\.(?:1\.\d+|2\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(7\.(?:1\.\d+|2\.\d+)|$))'
@@ -140,7 +141,7 @@ def extract_remediation_commands(text):
 
     return final_commands
 
-section=2.2
+section=4.2
 path = f'CIS_Splitted/{section}.pdf'
 document_content = extract_text_from_pdf(path)
 # print(preprocess_text(document_content))
