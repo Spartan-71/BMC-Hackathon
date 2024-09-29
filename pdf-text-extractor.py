@@ -140,6 +140,7 @@ extracted_rules = extract_rules(document_content)
 rules_dict = {rule['id']: {
                 'title': rule['title'],
                 'audit': rule['audit'],
+                'description': rule['description'],
                 # 'audit_command': rule['audit_command'],
                 'remediation': rule['remediation'],
                 # 'remediation_command': rule['remediation_command']
