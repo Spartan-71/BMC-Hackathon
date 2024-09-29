@@ -46,6 +46,7 @@ def extract_rules(text):
     
     return rules
 
+
 def extract_section(text, start_marker, end_marker):
     start = text.find(start_marker)
     if start == -1:
