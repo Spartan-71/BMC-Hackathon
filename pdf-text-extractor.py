@@ -22,20 +22,21 @@ def preprocess_text(text):
     cleaned_text = re.sub(r'\n+', '\n', cleaned_text)
     return cleaned_text
 
-def extract_rules(text,section_no):
+def extract_rules(text,section_key):
     preprocessed_text = preprocess_text(text)
     
-    patterns = [
-    r'(1\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+|5\.\d+|6\.\d+|7\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(1\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+|5\.\d+|6\.\d+|7\.\d+)|$))',
-    r'(2\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(2\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+)|$))',
-    r'(3\.(?:1\.\d+|2\.\d+|3\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(3\.(?:1\.\d+|2\.\d+|3\.\d+)|$))',
-    r'(4\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(4\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+)|$))',
-    r'(5\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(5\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+)|$))',
-    r'(6\.(?:1\.\d+|2\.\d+|3\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(6\.(?:1\.\d+|2\.\d+|3\.\d+)|$))',
-    r'(7\.(?:1\.\d+|2\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(7\.(?:1\.\d+|2\.\d+)|$))'
-    ]
+    patterns = {
+    1  :r'(1\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+|5\.\d+|6\.\d+|7\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(1\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+|5\.\d+|6\.\d+|7\.\d+)|$))',
+    2.1:r'(2\.(?:\d+\.){1,3}\d+)\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(2\.(?:\d+\.){1,3}\d+|$))',
+    2.2:r'(2\.3\.(?:1\.\d|2\.\d|3\.\d)|2\.4\.(?:1\.[1-8]|2\.1))\b\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(2\.3\.(?:1\.\d|2\.\d|3\.\d)|2\.4\.(?:1\.[1-8]|2\.1))|$)',
+    3  :r'(3\.(?:1\.\d+|2\.\d+|3\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(3\.(?:1\.\d+|2\.\d+|3\.\d+)|$))',
+    4  :r'(4\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(4\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+)|$))',
+    5  :r'(5\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(5\.(?:1\.\d+|2\.\d+|3\.\d+|4\.\d+)|$))',
+    6  :r'(6\.(?:1\.\d+|2\.\d+|3\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(6\.(?:1\.\d+|2\.\d+|3\.\d+)|$))',
+    7  :r'(7\.(?:1\.\d+|2\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(7\.(?:1\.\d+|2\.\d+)|$))'
+    }
 
-    matches = re.finditer(patterns[section_no-1], preprocessed_text, re.DOTALL)
+    matches = re.finditer(patterns[section_key], preprocessed_text, re.DOTALL)
     
     rules = []
     for match in matches:
@@ -139,11 +140,11 @@ def extract_remediation_commands(text):
 
     return final_commands
 
-section_num=3
-path = f'CIS_Splitted/{section_num}.pdf'
+section=2.2
+path = f'CIS_Splitted/{section}.pdf'
 document_content = extract_text_from_pdf(path)
 # print(preprocess_text(document_content))
-extracted_rules = extract_rules(document_content,section_num)
+extracted_rules = extract_rules(document_content,section_key=section)
 
 for rule in extracted_rules:
     # print(rule)
