@@ -1,3 +1,4 @@
+import json
 import PyPDF2
 import re
 
@@ -100,7 +101,7 @@ def extract_remediation_commands(text):
         r'`([^`]+)`',  # Text enclosed in backticks
         r'^\s*(chmod|chown|find|stat|mkdir|rm|cp|mv|ln|touch|cat)\s+.*?(?=\n|$)',  # Common Linux commands
         r'(?s)(#!/bin/bash|#!/usr/bin/env bash|{.*?})',  # Shell script blocks
-        r'(?s)#.*?\n\s*{.*?}\n'  # Match inline comments followed by script blocks
+        r'(?s)#.*?\n\s*{.*?}\n'  # Match inline comments    followed by script blocks
     ]
 
     # Find all matches for each pattern
@@ -135,15 +136,22 @@ path = 'system_file_permissions.pdf'
 document_content = extract_text_from_pdf(path)
 extracted_rules = extract_rules(document_content)
 
-# Print the extracted rules
-for rule in extracted_rules:
-    # print(rule)
-    print(f"Rule ID: {rule['id']}")
-    # print(f"Title: {rule['title']}")
-    # print(f"Profile Applicability: {rule['profile_applicability']}")
-    # print(f"Description: {rule['description'][:100]}...")  # Print first 100 characters
-    # print(f"Audit: {rule['audit']}")
-    print(f"Remediation: {rule['remediation']}")
-    # print(f"Audit command: {rule['audit_command']}")
-    # print(f"Remediation command: {rule['remediation_command']}")
-    print("=" * 50)
+# Create a dictionary with Rule ID as the key and the rest of the rule as the value
+rules_dict = {rule['id']: {
+                'title': rule['title'],
+                'audit': rule['audit'],
+                # 'audit_command': rule['audit_command'],
+                'remediation': rule['remediation'],
+                # 'remediation_command': rule['remediation_command']
+              } 
+              for rule in extracted_rules}
+
+# Define the path to save the JSON output
+json_output_path = 'extracted_rules_with_audit_output.json'
+
+# Save the rules dictionary to a JSON file
+with open(json_output_path, 'w') as json_file:
+    json.dump(rules_dict, json_file, indent=4)
+
+# Return the path of the saved file
+json_output_path
