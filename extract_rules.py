@@ -26,7 +26,8 @@ def extract_rules(text):
     preprocessed_text = preprocess_text(text)
     
     pattern = r'(7\.1\.(?:\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(7\.1\.(?:\d+)|$))'
-    
+    # pattern=r'(7\.(?:1\.\d+|2\.\d+))\s+(.*?)\s*(?:\(Automated\))?\n(Profile Applicability:.*?)(?=(7\.(?:1\.\d+|2\.\d+)|$))'
+
     matches = re.finditer(pattern, preprocessed_text, re.DOTALL)
     
     rules = []
