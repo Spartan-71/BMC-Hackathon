@@ -1,0 +1,225 @@
+{
+    "4": {
+        "description": "",
+        "sub_rules": {
+            "4.1.1": {
+                "id": "4.1.1",
+                "title": "Ensure a single firewall configuration utility is in use \n(Automated)",
+                "audit": "Run the following script to verify that a single firewall utility is in use on the system:  \n#!/usr/bin/env bash  \n \n{ \n   active_firewall=() firewalls=(\"ufw\" \"nftables\" \"iptables\")  \n   # Determine which firewall is in use  \n   for firewall in \"${firewalls[@]}\"; do  \n      case $firewall in  \n         nftables)  \n            cmd=\"nft\" ;;  \n         *) \n            cmd=$firewall ;;  \n      esac           \n      if command -v $cmd &> /dev/null && systemc tl is-enabled --quiet \n$firewall && systemctl is -active --quiet $firewall; then  \n         active_firewall+=(\"$firewall\")  \n      fi \n   done \n   # Display audit results  \n   if [ ${#active_firewall[@]} -eq 1 ]; then  \n      printf '%s \\n' \"\" \"Audit Results:\" \" ** PAS S **\" \" - A single firewall \nis in use follow the recommendation in ${active_firewall[0]} subsection ONLY\"  \n   elif [ ${#active_firewall[@]} -eq 0 ]; then  \n      printf '%s \\n' \"\" \" Audit Results:\" \" ** FAIL **\" \" - No firewall in use \nor unable to determine fir ewall status\"  \n   else \n      printf '%s \\n' \"\" \" Audit Results:\" \" ** FAIL **\" \" - Multiple firewalls \nare in use: ${active_firewall[*]}\"  \n   fi   \n}",
+                "remediation": "Remediating to a single firewall configuration is a complex process and involves several \nsteps. The following provides the basic steps to follow for a single firewall configuration:  \n1. Determine which firewall utility best fits organizational needs  \n2. Follow the recommendations in the subsequent subsection for the single firewall \nto be used  \nNote:  Review the firewall subsection overview for the selected firewall to be \nused, it contains a script to  \nsimplify this process.  \n3. Return to this recommendation to ensure a single firewall configuration utility is in \nuse \n  Page 445 References:  \n1. https://wiki.debian.org/DebianFirewall  \n2. https://wiki.ubuntu.com/UncomplicatedFirewall  \n3. https://assets.ubuntu.com/v1/544d9904 -ubuntu -server -guide -2024 -01-22.pdf  \n4. https://www.debian.org/doc/manuals/debian -reference/debian -reference.en.pdf  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv8 4.5 Implement and Manage a Firewall on End -User \nDevices  \n Implement and manage a host -based firewall or port -filtering tool on end -user \ndevices, with a default -deny rule that drops all traffic except those services and \nports that are explicitly allowed.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562, T1562.004  TA0011  M1031, M1037  \nPage 446 4.2 Configure UncomplicatedFirewall  \nIf nftables or iptables are being used in your environment, please follow the \nguidance in their respective section and pass -over the guidance in this section.  \nUncomplicated Firewall (UFW) is a program for managing a netfilter firewall designed to \nbe easy to use.  \nUses a command -line interface consisting of a small number of simple \ncommands  \nUses iptables for configuration  \nRules are processed until first matching rule. The first matching rule will be \napplied.  \nNotes:  \nConfiguration of a live system's firewall directly over a remote connection will \noften result in being locked out  \nRules should be ordered so that ALLOW  rules come before DENY  rules.  Page 447",
+                "audit_command": "!/usr/bin/env bash  \nfirewall && systemctl is -active --quiet $firewall; then  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": []
+            },
+            "4.2.1": {
+                "id": "4.2.1",
+                "title": "Ensure ufw is installed (Automated)",
+                "audit": "Run the following command to verify that Uncomplicated Firewall (UFW) is installed:  \n# dpkg-query -s ufw &>/dev/null && echo \"ufw is installed\"  \n \nufw is installed",
+                "remediation": "Run the following command to install Uncomplicated Firewall (UFW):  \n# apt install ufw  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: SC -7 Page 448 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv8 4.5 Implement and Manage a Firewall on End -User \nDevices  \n Implement and manage a host -based firewall or port -filtering tool on end -user \ndevices, with a default -deny rule that drops all traffic except those services and \nports that are explicitly allowed.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562, T1562.004  TA0011  M1031, M1037  Page 449",
+                "audit_command": "dpkg-query -s ufw &>/dev/null && echo \"ufw is installed\"  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "apt install ufw"
+                ]
+            },
+            "4.2.2": {
+                "id": "4.2.2",
+                "title": "Ensure iptables -persistent is not installed with ufw \n(Automated)",
+                "audit": "Run the following command to verify that the iptables -persistent  package is not \ninstalled:  \n# dpkg-query -s iptables -persistent &>/dev/null && echo \"iptables -persistent \nis installed\"  \nNothing should be returned",
+                "remediation": "Run the following command to remove the iptables -persistent  package:  \n# apt purge iptables -persistent  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: SC -7 \n  Page 450 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv8 4.5 Implement and Manage a Firewall on End -User \nDevices  \n Implement and manage a host -based firewall or port -filtering tool on end -user \ndevices, with a default -deny rule that drops all traffic except those services and \nports that are explicitly allowed.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562, T1562.004  TA0005  M1033  Page 451",
+                "audit_command": "dpkg-query -s iptables -persistent &>/dev/null && echo \"iptables -persistent ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "apt purge iptables -persistent"
+                ]
+            },
+            "4.2.3": {
+                "id": "4.2.3",
+                "title": "Ensure ufw service is enabled (Automated)",
+                "audit": "Run the following command to verify that the ufw daemon is enabled:  \n# systemctl is -enabled ufw.service  \n \nenabled \nRun the following command to verify that the ufw daemon is active:  \n# systemctl is -active ufw  \n \nactive \nRun the following command to verify ufw is active  \n# ufw status  \n \nStatus: active",
+                "remediation": "Run the following command to unmask the ufw daemon:  \n# systemctl unmask ufw.service  \nRun the following command to enable and start the ufw daemon:  \n# systemctl --now enable ufw.service  \n \nactive \nRun the following command to enable ufw:  \n# ufw enable  \nReferences:  \n1. http://manpages.ubuntu.com/manpages/precise/en/man8/ufw.8.html  \n2. NIST SP 800 -53 Rev. 5: SC -7 \n  \nPage 453 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv8 4.5 Implement and Manage a Firewall on End -User \nDevices  \n Implement and manage a host -based firewall or port -filtering tool on end -user \ndevices, with a default -deny rule that drops all traffic except those services and \nports that are explicitly allowed.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562, T1562.004  TA0005  M1018  Page 454",
+                "audit_command": "systemctl is -enabled ufw.service  \nsystemctl is -active ufw  \nufw status  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "systemctl unmask ufw.service",
+                    "systemctl --now enable ufw.service",
+                    "ufw enable"
+                ]
+            },
+            "4.2.4": {
+                "id": "4.2.4",
+                "title": "Ensure ufw loopback traffic is configured (Automated)",
+                "audit": "",
+                "remediation": "",
+                "audit_command": "",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": []
+            },
+            "4.2.5": {
+                "id": "4.2.5",
+                "title": "Ensure ufw outbound connections are configured (Manual)",
+                "audit": "Run the following command and verify all rules for new outbound connections match \nsite policy:  \n# ufw status numbered",
+                "remediation": "Configure ufw in accordance with site policy. The following commands will implement a \npolicy to allow all outbound connections on all interfaces:  \n# ufw allow out on all  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: SC -7 Page 458 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv8 4.5 Implement and Manage a Firewall on End -User \nDevices  \n Implement and manage a host -based firewall or port -filtering tool on end -user \ndevices, with a default -deny rule that drops all traffic except those services and \nports that are explicitly allowed.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562, T1562.004  TA0011  M1031, M1037  Page 459",
+                "audit_command": "ufw status numbered",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "ufw allow out on all"
+                ]
+            },
+            "4.2.6": {
+                "id": "4.2.6",
+                "title": "Ensure ufw firewall rules exist for all open ports (Automated)",
+                "audit": "Run the following script to verify a firewall rule exists for all open ports:  \n#!/usr/bin/env bash  \n \n{ \n   unset a_ufwout;unset a_openports  \n   while read -r l_ufwport; do  \n      [ -n \"$l_ufwport\" ] && a_ufwout+=(\"$l_ufwport\")  \n   done < <(ufw status verbose | grep -Po '^\\h*\\d+\\b' | sort -u) \n   while read -r l_openport; do  \n      [ -n \"$l_openport\" ] && a_openports+=(\"$l_openport\")  \n   done < <(ss -tuln | awk '($5!~/%lo:/ && $5!~/",
+                "remediation": "",
+                "audit_command": "!/usr/bin/env bash  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": []
+            },
+            "4.3.1": {
+                "id": "4.3.1",
+                "title": "Ensure nftables is installed (Automated)",
+                "audit": "Run the following command to verify that nftables  is installed:  \n# dpkg-query -s nftables &>/dev/null && echo \"nftables is installed\"  \n \nnftables is installed",
+                "remediation": "Run the following command to install nftables : \n# apt install nftables  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: CA -9 Page 467 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv8 4.5 Implement and Manage a Firewall on End -User \nDevices  \n Implement and manage a host -based firewall or port -filtering tool on end -user \ndevices, with a default -deny rule that drops all traffic except those services and \nports that are explicitly allowed.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562, T1562.004  TA0011  M1031, M1037  Page 468",
+                "audit_command": "dpkg-query -s nftables &>/dev/null && echo \"nftables is installed\"  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "apt install nftables"
+                ]
+            },
+            "4.3.2": {
+                "id": "4.3.2",
+                "title": "Ensure ufw is uninstalled or disabled with nftables \n(Automated)",
+                "audit": "Run the following commands to verify that ufw is either  not installed or inactive. Only \none of the following needs to pass.  \nRun the following command to verify that ufw is not installed:  \n# dpkg-query -s ufw &>/dev/null && echo \"ufw is installed\"  \nNothing should be returned  \n-OR- \nRun the following commands to verify ufw is disabled and ufw.service  is not enabled:  \n# ufw status  \n \nStatus: inactive  \n# systemctl is -enabled ufw.service  \n \nmasked \n  Page 469",
+                "remediation": "Run one of the following to either remove ufw or disable ufw and mask ufw.service : \nRun the following command to remove ufw: \n# apt purge ufw  \n-OR- \nRun the following commands to disable ufw and mask ufw.service : \n# ufw disable  \n# systemctl stop ufw.service  \n# systemctl mask ufw.service  \nNote:  ufw disable  needs to be run before systemctl mask ufw.service  in order to \ncorrectly disable UFW \nReferences:  \n1. NIST SP 800 -53 Rev. 5: SC -7 \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv8 4.5 Implement and Manage a Firewall on End -User \nDevices  \n Implement and manage a host -based firewall or port -filtering tool on end -user \ndevices, with a default -deny rule that drops all traffic except those services and \nports that are explicitly allowed.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562, T1562.004  TA0005  M1033  Page 470",
+                "audit_command": "dpkg-query -s ufw &>/dev/null && echo \"ufw is installed\"  \nufw status  \nsystemctl is -enabled ufw.service  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "apt purge ufw",
+                    "ufw disable",
+                    "systemctl stop ufw.service",
+                    "systemctl mask ufw.service"
+                ]
+            },
+            "4.3.3": {
+                "id": "4.3.3",
+                "title": "Ensure iptables are flushed with nftables (Manual)",
+                "audit": "Run the following commands to ensure no iptables rules exist  \nFor iptables:  \n# iptables -L \nNo rules should be returned  \nFor ip6tables:  \n# ip6tables -L \nNo rules should be returned",
+                "remediation": "Run the following commands to flush iptables:  \nFor iptables:  \n# iptables -F \nFor ip6tables:  \n# ip6tables -F \nReferences:  \n1. NIST SP 800 -53 Rev. 5: CA -9, SC -7 Page 471 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv8 4.5 Implement and Manage a Firewall on End -User \nDevices  \n Implement and manage a host -based firewall or port -filtering tool on end -user \ndevices, with a default -deny rule that drops all traffic except those services and \nports that are explicitly allowed.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562, T1562.004  TA0005   Page 472",
+                "audit_command": "iptables -L \nip6tables -L ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "iptables -F",
+                    "ip6tables -F"
+                ]
+            },
+            "4.3.4": {
+                "id": "4.3.4",
+                "title": "Ensure a nftables table exists (Automated)",
+                "audit": "Run the following command to verify that a nftables table exists:  \n# nft list tables  \nReturn should include a list of nftables:  \nExample:  \ntable inet filter",
+                "remediation": "Run the following command to create a table in nftables  \n# nft create table inet <table name>  \nExample:  \n# nft create table inet filter  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: CA -9, SC -7 Page 473 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv8 4.5 Implement and Manage a Firewall on End -User \nDevices  \n Implement and manage a host -based firewall or port -filtering tool on end -user \ndevices, with a default -deny rule that drops all traffic except those services and \nports that are explicitly allowed.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562, T1562.004  TA0011  M1047  Page 474",
+                "audit_command": "nft list tables  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "nft create table inet <table name>",
+                    "nft create table inet filter"
+                ]
+            },
+            "4.3.5": {
+                "id": "4.3.5",
+                "title": "Ensure nftables base chains exist (Automated)",
+                "audit": "Run the following commands and verify that base chains exist for INPUT . \n# nft list ruleset | grep 'hook input'  \n \ntype filter hook input priority 0;  \nRun the following commands and verify that base chains exist for FORWARD . \n# nft list ruleset | grep 'hook forward'  \n \ntype filter hook forward priority 0;  \nRun the following commands and verify that base chains exist for OUTPUT . \n# nft list ruleset | grep 'hook output'  \n \ntype filter hook output priority 0;  \n  Page 475",
+                "remediation": "Run the following command to create the base chains:  \n# nft create chain inet <table name> <base chain name> { type filter hook \n<(input|forward|output)> priority 0 \\; } \nExample:  \n# nft create chain inet filter input { type filter hook input priority 0 \\; } \n \n# nft create chain inet filter forward { type filter hook forward priority 0 \n\\; } \n \n# nft create chain inet filter output { type filter hook output priority 0 \\; \n} \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv8 4.5 Implement and Manage a Firewall on End -User \nDevices  \n Implement and manage a host -based firewall or port -filtering tool on end -user \ndevices, with a default -deny rule that drops all traffic except those services and \nports that are explicitly allowed.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562, T1562.004  TA0005  M1047  Page 476",
+                "audit_command": "nft list ruleset | grep 'hook input'  \nnft list ruleset | grep 'hook forward'  \nnft list ruleset | grep 'hook output'  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "nft create chain inet <table name> <base chain name> { type filter hook",
+                    "nft create chain inet filter input { type filter hook input priority 0 \\; }",
+                    "nft create chain inet filter forward { type filter hook forward priority 0",
+                    "nft create chain inet filter output { type filter hook output priority 0 \\;"
+                ]
+            },
+            "4.3.6": {
+                "id": "4.3.6",
+                "title": "Ensure nftables loopback traffic is configured (Automated)",
+                "audit": "Run the following commands to verify that the loopback interface is configured:  \nRun the following command to verify the loopback interface is configured to accept \nnetwork traffic:  \n# nft list ruleset | awk '/hook input/,/}/' | grep 'iif \"lo\" accept'  \nExample output:  \niif \"lo\" accept  \nRun the following command to verify network traffic from an iPv4 loopback interface is \nconfigured to drop:  \n# nft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr'  \nExample output:  \nip saddr",
+                "remediation": "",
+                "audit_command": "nft list ruleset | awk '/hook input/,/}/' | grep 'iif \"lo\" accept'  \nnft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr'  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": []
+            },
+            "4.3.7": {
+                "id": "4.3.7",
+                "title": "Ensure nftables outbound and established connections are \nconfigured (Manual)",
+                "audit": "Run the following commands and verify all rules for established incoming connections \nmatch site policy: site policy:  \n# nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol (tcp|udp) \nct state'  \nOutput should be similar to:  \nip protocol tcp ct state established accept  \nip protocol udp ct state established accept  \nRun the folllowing command and verify all rules for new and established outbound \nconnections match site policy  \n# nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol (tcp|udp) \nct state'  \nOutput should be similar to:  \nip protocol tcp ct state established,related,new accept  \nip protocol udp ct state established,related,new accept  \n  Page 479",
+                "remediation": "Configure nftables in accordance with site policy. The following commands will \nimplement a policy to allow all outbound connections and all established connections:  \n# nft add rule inet filter input ip protocol tcp ct state established accept  \n \n# nft add rule inet filter input ip protocol udp ct state established accept  \n \n# nft add rule inet filter output ip protocol tcp ct state \nnew,related,established accept  \n \n# nft add  rule inet filter output ip protocol udp ct state \nnew,related,established accept  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: CA -9, SC -7 \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv8 4.5 Implement and Manage a Firewall on End -User \nDevices  \n Implement and manage a host -based firewall or port -filtering tool on end -user \ndevices, with a default -deny rule that drops all traffic except those services and \nports that are explicitly allowed.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562  TA0011  M1031, M1037  Page 480",
+                "audit_command": "nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol (tcp|udp) \nnft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol (tcp|udp) ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "nft add rule inet filter input ip protocol tcp ct state established accept",
+                    "nft add rule inet filter input ip protocol udp ct state established accept",
+                    "nft add rule inet filter output ip protocol tcp ct state",
+                    "nft add  rule inet filter output ip protocol udp ct state"
+                ]
+            },
+            "4.3.8": {
+                "id": "4.3.8",
+                "title": "Ensure nftables default deny firewall policy (Automated)",
+                "audit": "Run the following commands and verify that base chains contain a policy of DROP . \n# nft list ruleset | grep 'hook input'  \n \ntype filter hook input priority 0; policy drop;  \n# nft list ruleset | grep 'hook forward'  \n \ntype filter hook forward priority 0; policy drop;  \n# nft list ruleset | grep 'hook output'  \n \ntype filter hook output priority 0; policy drop;",
+                "remediation": "Run the following command for the base chains with the input, forward, and output \nhooks to implement a default DROP policy:  \n# nft chain <table family> <table name> <chain name> { policy drop \\; } \nExample:  \n# nft chain inet filter input { policy drop \\; } \n \n# nft chain inet filter forward { policy drop \\; } \n \n# nft chain inet filter output { policy drop \\; }",
+                "audit_command": "nft list ruleset | grep 'hook input'  \nnft list ruleset | grep 'hook forward'  \nnft list ruleset | grep 'hook output'  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "nft chain <table family> <table name> <chain name> { policy drop \\; }",
+                    "nft chain inet filter input { policy drop \\; }",
+                    "nft chain inet filter forward { policy drop \\; }",
+                    "nft chain inet filter output { policy drop \\; }"
+                ]
+            },
+            "4.3.9": {
+                "id": "4.3.9",
+                "title": "Ensure nftables service is enabled (Automated)",
+                "audit": "Run the following command and verify that the nftables service is enabled:  \n# systemctl is -enabled nftables  \n \nenabled",
+                "remediation": "Run the following command to enable the nftables service:  \n# systemctl enable nftables  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: CA -9, SC -7 \n  Page 484 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv8 4.5 Implement and Manage a Firewall on End -User \nDevices  \n Implement and manage a host -based firewall or port -filtering tool on end -user \ndevices, with a default -deny rule that drops all traffic except those services and \nports that are explicitly allowed.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562, T1562.004  TA0011  M1031, M1037  Page 485",
+                "audit_command": "systemctl is -enabled nftables  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "systemctl enable nftables"
+                ]
+            },
+            "4.3.10": {
+                "id": "4.3.10",
+                "title": "Ensure nftables rules are permanent (Automated)",
+                "audit": "Run the following commands to verify that input, forward, and output base chains are \nconfigured to be applied to a nftables ruleset on boot:  \nRun the following command to verify the input base chain:  \n# [ -n \"$(grep -E '^\\s*include' /etc/nftables.conf)\" ] && awk '/hook \ninput/,/}/' $(awk '$1 ~ /^ \\s*include/ { gsub(\" \\\"\",\"\",$2);print $2 }' \n/etc/nftables.conf)  \nOutput should be similar to:  \n                type filter hook input priority 0; policy drop;  \n \n                # Ensure loopback traffic is configured  \n                iif \"lo\" accept  \n                ip saddr",
+                "remediation": "",
+                "audit_command": "[ -n \"$(grep -E '^\\s*include' /etc/nftables.conf)\" ] && awk '/hook ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": []
+            }
+        }
+    },
+    "168": {
+        "description": "",
+        "sub_rules": {
+            "168.1.0": {
+                "id": "168.1.0",
+                "title": "network:  \nufw allow from 192.168.1.0/24 to any proto tcp port 443  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: SC -7 Page 461 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562, T1562.004  TA0011  M1031, M1037  Page 462 4.2.7 Ensure ufw default deny firewall policy (Automated)",
+                "audit": "Run the following command and verify that the default policy for incoming  , outgoing  , \nand routed  directions is deny  , reject  , or disabled : \n# ufw status verbose | grep Default:  \nExample output:  \nDefault: deny (incoming), deny (outgoing), disabled (routed)  \n  Page 463",
+                "remediation": "Run the following commands to implement a default deny  policy:  \n# ufw default deny incoming  \n# ufw default deny outgoing  \n# ufw default deny routed  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: SC -7 \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 4.4 Implement and Manage a Firewall on Servers  \n Implement and manage a firewall on servers, where supported. Example \nimplementations include a virtual firewall, operating system firewall, or a third -\nparty firewall agent.  \u25cf \u25cf \u25cf \nv8 4.5 Implement and Manage a Firewall on End -User \nDevices  \n Implement and manage a host -based firewall or port -filtering tool on end -user \ndevices, with a default -deny rule that drops all traffic except those services and \nports that are explicitly allowed.  \u25cf \u25cf \u25cf \nv7 9.4 Apply Host -based Firewalls or Port Filtering  \n Apply host -based firewalls or port filtering tools on end systems, with a \ndefault -deny rule that drops all traffic except those services and ports that are \nexplicitly allowed.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1562, T1562.004  TA0011  M1031, M1037  Page 464 4.3 Configure nftables  \nIf Uncomplicated Firewall (UFW) or iptables are being used in your environment, \nplease follow the guidance in their respective section and pass -over the guidance \nin this section.  \nnftables  is a subsystem of the Linux kernel providing filtering and classification of \nnetwork packets/datagrams/frames and is the successor to iptables. The biggest \nchange with the successor nftables  is its simplicity. With iptables, we have to \nconfigure every single rule and use the syntax which can be compared with normal \ncommands. With nftables , the simpler syntax, much like BPF (Berkely Packet Filter) \nmeans shorter lines and less repetition. Support for nftables  should also be compiled \ninto the kernel, together with the related nftables  modules. Please ensure that your \nkernel supports nf_tables before choosing this option.  \nNotes:  \nThis section broadly assumes starting with an empty nftables  firewall ruleset \n(established by flushing the rules with nft flush ruleset).  \nRemediation steps included only affect the live system, you will also need to \nconfigure your default firewall configuration to apply on boot.  \nConfiguration of a live systems firewall directly over a remote connection will \noften result in being locked out. It is advised to have a known good firewall \nconfiguration set to run on boot and to configure an entire firewall structure in a \nscript that is  then run and tested before saving to boot.  \nThe following script will implement the firewall rules of this section and open port \n22(ssh) from anywhere. Opening the ports for port 22(ssh) needs to be updated in \naccordance with local site policy. Allow port 22(ssh) needs to be updated to only \nallow systems requiring ssh connectivity to connect, as per site policy . \nSave the script below as /etc/nftables.rules  Page 465 #!/sbin/nft -f \n \n# This nftables.rules config should be saved as /etc/nftables.rules  \n# flush nftables rulesset  \nflush ruleset  \n# Load nftables ruleset  \n# nftables config with inet table named filter  \ntable inet filter {  \n        # Base chain for input hook named input (Filters inbound network \npackets)  \n        chain input {  \n                type filter hook input priority 0; policy drop;  \n \n                # Ensure loopback traffic is configured  \n                iif \"lo\" accept  \n                ip saddr",
+                "audit_command": "ufw status verbose | grep Default:  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "ufw default deny incoming",
+                    "ufw default deny outgoing",
+                    "ufw default deny routed",
+                    "!/sbin/nft -f",
+                    "This nftables.rules config should be saved as /etc/nftables.rules",
+                    "flush nftables rulesset",
+                    "Load nftables ruleset",
+                    "nftables config with inet table named filter",
+                    "Base chain for input hook named input (Filters inbound network",
+                    "Ensure loopback traffic is configured"
+                ]
+            }
+        }
+    }
+}
