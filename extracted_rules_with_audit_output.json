@@ -1,0 +1,132 @@
+{
+    "1.1.2.1.1": {
+        "title": "Ensure /tmp is a separate partition (Automated)",
+        "audit": "Run the following command and verify the output shows that /tmp  is mounted. \nParticular requirements pertaining to mount options are covered in ensuing sections.  \n# findmnt -kn /tmp \nExample output:  \n/tmp   tmpfs  tmpfs  rw,nosuid,nodev,noexec  \nEnsure that systemd will mount the /tmp  partition at boot time.  \n# systemctl is -enabled tmp.mount  \nExample output:  \ngenerated  \nVerify output is not masked  or disabled . \nNote:  By default, systemd will output generated  if there is an entry in /etc/fstab  for \n/tmp . This just means systemd will use the entry in /etc/fstab  instead of its default \nunit file configuration for /tmp .",
+        "remediation": "First ensure that systemd is correctly configured to ensure that /tmp  will be mounted at \nboot time.  \n# systemctl unmask tmp.mount  \nFor specific configuration requirements of the /tmp  mount for your environment, modify \n/etc/fstab . \nExample of using tmpfs  with specific mount options:  \ntmpfs /tmp tmpfs     defaults,rw,nosuid,nodev,noexec,relatime,size=2G  0 \n0 \nNote:  the size=2G  is an example of setting a specific size for tmpfs . \nExample of using a volume or disk with specific mount options. The source location of \nthe volume or disk will vary depending on your environment:  \n<device> /tmp    <fstype>    defaults,nodev,nosuid,noexec   0 0"
+    },
+    "1.1.2.1.2": {
+        "title": "Ensure nodev option set on /tmp partition (Automated)",
+        "audit": "- IF - a separate partition exists for /tmp , verify that the nodev  option is set.  \nRun the following command to verify that the nodev  mount option is set.  \nExample:  \n# findmnt -kn /tmp | grep -v nodev \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /tmp . \nEdit the /etc/fstab  file and add nodev  to the fourth field (mounting options) for the \n/tmp  partition.  \nExample:  \n<device> /tmp    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 0  \nRun the following command to remount /tmp  with the configured options:  \n# mount -o remount /tmp"
+    },
+    "1.1.2.1.3": {
+        "title": "Ensure nosuid option set on /tmp partition (Automated)",
+        "audit": "- IF - a separate partition exists for /tmp , verify that the nosuid  option is set.  \nRun the following command to verify that the nosuid  mount option is set.  \nExample:  \n# findmnt -kn /tmp | grep -v nosuid  \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /tmp . \nEdit the /etc/fstab  file and add nosuid  to the fourth field (mounting options) for the \n/tmp  partition.  \nExample:  \n<device> /tmp    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 0  \nRun the following command to remount /tmp  with the configured options:  \n# mount -o remount /tmp"
+    },
+    "1.1.2.1.4": {
+        "title": "Ensure noexec option set on /tmp partition (Automated)",
+        "audit": "- IF - a separate partition exists for /tmp , verify that the noexec  option is set.  \nRun the following command to verify that the noexec  mount option is set.  \nExample:  \n# findmnt -kn /tmp | grep -v noexec  \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /tmp . \nEdit the /etc/fstab  file and add noexec  to the fourth field (mounting options) for the \n/tmp  partition.  \nExample:  \n<device> /tmp    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 0  \nRun the following command to remount /tmp  with the configured options:  \n# mount -o remount /tmp"
+    },
+    "1.1.2.2.1": {
+        "title": "Ensure /dev/shm is a separate partition (Automated)",
+        "audit": "-IF- /dev/shm  is to be used on the system, run the following command and verify the \noutput shows that /dev/shm  is mounted. Particular requirements pertaining to mount \noptions are covered in ensuing sections.  \n# findmnt -kn /dev/shm  \nExample output:  \n/dev/shm   tmpfs  tmpfs  rw,nosuid,nodev,noexec,relatime,seclabel  \n  Page 88",
+        "remediation": "For specific configuration requirements of the /dev/shm  mount for your environment, \nmodify /etc/fstab . \nExample:  \ntmpfs /dev/shm  tmpfs     \ndefaults,rw,nosuid,nodev,noexec,relatime,size=2G  0 0"
+    },
+    "1.1.2.2.2": {
+        "title": "Ensure nodev option set on /dev/shm partition \n(Automated)",
+        "audit": "- IF - a separate partition exists for /dev/shm , verify that the nodev  option is set.  \n# findmnt -kn /dev/shm | grep -v 'nodev'  \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /dev/shm . \nEdit the /etc/fstab  file and add nodev  to the fourth field (mounting options) for the \n/dev/shm  partition. See the fstab(5)  manual page for more information.  \nExample:  \ntmpfs /dev/shm    tmpfs     defaults,rw,nosuid,nodev,noexec,relatime  0 0  \nRun the following command to remount /dev/shm  with the configured options:  \n# mount -o remount /dev/shm  \nNote:  It is recommended to use tmpfs  as the device/filesystem type as /dev/shm  is \nused as shared memory space by applications."
+    },
+    "1.1.2.2.3": {
+        "title": "Ensure nosuid option set on /dev/shm partition \n(Automated)",
+        "audit": "- IF - a separate partition exists for /dev/shm , verify that the nosuid  option is set.  \n# findmnt -kn /dev/shm | grep -v 'nosuid'  \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /dev/shm . \nEdit the /etc/fstab  file and add nosuid  to the fourth field (mounting options) for the \n/dev/shm  partition. See the fstab(5)  manual page for more information.  \nExample:  \ntmpfs /dev/shm    tmpfs     defaults,rw,nosuid,nodev,noexec,relatime  0 0  \nRun the following command to remount /dev/shm  with the configured options:  \n# mount -o remount /dev/shm  \nNote:  It is recommended to use tmpfs  as the device/filesystem type as /dev/shm  is \nused as shared memory space by applications."
+    },
+    "1.1.2.2.4": {
+        "title": "Ensure noexec option set on /dev/shm partition \n(Automated)",
+        "audit": "- IF - a separate partition exists for /dev/shm , verify that the noexec  option is set.  \n# findmnt -kn /dev/shm | grep -v 'noexec'  \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /dev/shm . \nEdit the /etc/fstab  file and add noexec  to the fourth field (mounting options) for the \n/dev/shm  partition.  \nExample:  \ntmpfs /dev/shm    tmpfs     defaults,rw,nosuid,nodev,noexec,relatime  0 0  \nRun the following command to remount /dev/shm  with the configured options:  \n# mount -o remount /dev/shm  \nNote:  It is recommended to use tmpfs  as the device/filesystem type as /dev/shm  is \nused as shared memory space by applications."
+    },
+    "1.1.2.3.1": {
+        "title": "Ensure separate partition exists for /home (Automated)",
+        "audit": "Run the following command and verify output shows /home  is mounted:  \n# findmnt -kn /home  \n \n/home   /dev/sdb  ext4  rw,nosuid,nodev,noexec,relatime,seclabel",
+        "remediation": "For new installations, during installation create a custom partition setup and specify a \nseparate partition for /home . \nFor systems that were previously installed, create a new partition and configure \n/etc/fstab  as appropriate."
+    },
+    "1.1.2.3.2": {
+        "title": "Ensure nodev option set on /home partition (Automated)",
+        "audit": "- IF - a separate partition exists for /home , verify that the nodev  option is set.  \nRun the following command to verify that the nodev  mount option is set.  \nExample:  \n# findmnt -kn /home | grep -v nodev \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /home . \nEdit the /etc/fstab  file and add nodev  to the fourth field (mounting options) for the \n/home  partition.  \nExample:  \n<device> /home    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 0  \nRun the following command to remount /home  with the configured options:  \n# mount -o remount /home"
+    },
+    "1.1.2.3.3": {
+        "title": "Ensure nosuid option set on /home partition (Automated)",
+        "audit": "- IF - a separate partition exists for /home , verify that the nosuid  option is set.  \nRun the following command to verify that the nosuid  mount option is set.  \nExample:  \n# findmnt -kn /home | grep -v nosuid  \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /home . \nEdit the /etc/fstab  file and add nosuid  to the fourth field (mounting options) for the \n/home  partition.  \nExample:  \n<device> /home    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 0  \nRun the following command to remount /home  with the configured options:  \n# mount -o remount /home"
+    },
+    "1.1.2.4.1": {
+        "title": "Ensure separate partition exists for /var (Automated)",
+        "audit": "Run the following command and verify output shows /var  is mounted.  \nExample:  \n# findmnt -kn /var \n \n/var  /dev/sdb  ext4   rw,nosuid,nodev,noexec,relatime,seclabel",
+        "remediation": "For new installations, during installation create a custom partition setup and specify a \nseparate partition for /var . \nFor systems that were previously installed, create a new partition and configure \n/etc/fstab  as appropriate."
+    },
+    "1.1.2.4.2": {
+        "title": "Ensure nodev option set on /var partition (Automated)",
+        "audit": "- IF - a separate partition exists for /var , verify that the nodev  option is set.  \nRun the following command to verify that the nodev  mount option is set.  \nExample:  \n# findmnt -kn /var | grep -v nodev \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /var . \nEdit the /etc/fstab  file and add nodev  to the fourth field (mounting options) for the \n/var  partition.  \nExample:  \n<device> /var    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 0  \nRun the following command to remount /var  with the configured options:  \n# mount -o remount /var"
+    },
+    "1.1.2.4.3": {
+        "title": "Ensure nosuid option set on /var partition (Automated)",
+        "audit": "- IF - a separate partition exists for /var , verify that the nosuid  option is set.  \nRun the following command to verify that the nosuid  mount option is set.  \nExample:  \n# findmnt -kn /var | grep -v nosuid  \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /var . \nEdit the /etc/fstab  file and add nosuid  to the fourth field (mounting options) for the \n/var  partition.  \nExample:  \n<device> /var    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 0  \nRun the following command to remount /var  with the configured options:  \n# mount -o remount /var"
+    },
+    "1.1.2.5.1": {
+        "title": "Ensure separate partition exists for /var/tmp \n(Automated)",
+        "audit": "Run the following command and verify output shows /var/tmp  is mounted.  \nExample:  \n# findmnt -kn /var/tmp  \n \n/var/tmp   /dev/sdb ext4   rw,nosuid,nodev,noexec,relatime,seclabel",
+        "remediation": "For new installations, during installation create a custom partition setup and specify a \nseparate partition for /var/tmp . \nFor systems that were previously installed, create a new partition and configure \n/etc/fstab  as appropriate.  Page 113"
+    },
+    "1.1.2.5.2": {
+        "title": "Ensure nodev option set on /var/tmp partition \n(Automated)",
+        "audit": "- IF - a separate partition exists for /var/tmp , verify that the nodev  option is set.  \nRun the following command to verify that the nodev  mount option is set.  \nExample:  \n# findmnt -kn /var/tmp | grep -v nodev \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /var/tmp . \nEdit the /etc/fstab  file and add nodev  to the fourth field (mounting options) for the \n/var/tmp  partition.  \nExample:  \n<device> /var/tmp    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 \n0 \nRun the following command to remount /var/tmp  with the configured options:  \n# mount -o remount /var/tmp"
+    },
+    "1.1.2.5.3": {
+        "title": "Ensure nosuid option set on /var/tmp partition \n(Automated)",
+        "audit": "- IF - a separate partition exists for /var/tmp , verify that the nosuid  option is set.  \nRun the following command to verify that the nosuid  mount option is set.  \nExample:  \n# findmnt -kn /var/tmp | grep -v nosuid  \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /var/tmp . \nEdit the /etc/fstab  file and add nosuid  to the fourth field (mounting options) for the \n/var/tmp  partition.  \nExample:  \n<device> /var/tmp    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 \n0 \nRun the following command to remount /var/tmp  with the configured options:  \n# mount -o remount /var/tmp"
+    },
+    "1.1.2.5.4": {
+        "title": "Ensure noexec option set on /var/tmp partition \n(Automated)",
+        "audit": "- IF - a separate partition exists for /var/tmp , verify that the noexec  option is set.  \nRun the following command to verify that the noexec  mount option is set.  \nExample:  \n# findmnt -kn /var/tmp | grep -v noexec  \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /var/tmp . \nEdit the /etc/fstab  file and add noexec  to the fourth field (mounting options) for the \n/var/tmp  partition.  \nExample:  \n<device> /var/tmp    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 \n0 \nRun the following command to remount /var/tmp  with the configured options:  \n# mount -o remount /var/tmp"
+    },
+    "1.1.2.6.1": {
+        "title": "Ensure separate partition exists for /var/log (Automated)",
+        "audit": "Run the following command and verify output shows /var/log  is mounted:  \n# findmnt -kn /var/log  \n \n/var/log /dev/sdb ext4   rw,nosuid,nodev,noexec,relatime,seclabel",
+        "remediation": "For new installations, during installation create a custom partition setup and specify a \nseparate partition for /var/log  . \nFor systems that were previously installed, create a new partition and configure \n/etc/fstab  as appropriate.  Page 122"
+    },
+    "1.1.2.6.2": {
+        "title": "Ensure nodev option set on /var/log partition \n(Automated)",
+        "audit": "- IF - a separate partition exists for /var/log , verify that the nodev  option is set.  \nRun the following command to verify that the nodev  mount option is set.  \nExample:  \n# findmnt -kn /var/log | grep -v nodev \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /var/log . \nEdit the /etc/fstab  file and add nodev  to the fourth field (mounting options) for the \n/var/log  partition.  \nExample:  \n<device> /var/log    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 \n0 \nRun the following command to remount /var/log  with the configured options:  \n# mount -o remount /var/log"
+    },
+    "1.1.2.6.3": {
+        "title": "Ensure nosuid option set on /var/log partition \n(Automated)",
+        "audit": "- IF - a separate partition exists for /var/log , verify that the nosuid  option is set.  \nRun the following command to verify that the nosuid  mount option is set.  \nExample:  \n# findmnt -kn /var/log | grep -v nosuid  \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /var/log . \nEdit the /etc/fstab  file and add nosuid  to the fourth field (mounting options) for the \n/var/log  partition.  \nExample:  \n<device> /var/log    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 \n0 \nRun the following command to remount /var/log  with the configured options:  \n# mount -o remount /var/log"
+    },
+    "1.1.2.6.4": {
+        "title": "Ensure noexec option set on /var/log partition \n(Automated)",
+        "audit": "- IF - a separate partition exists for /var/log , verify that the noexec  option is set.  \nRun the following command to verify that the noexec  mount option is set.  \nExample:  \n# findmnt -kn /var/log | grep -v noexec  \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /var/log . \nEdit the /etc/fstab  file and add noexec  to the fourth field (mounting options) for the \n/var/log  partition.  \nExample:  \n<device> /var/log    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 \n0 \nRun the following command to remount /var/log  with the configured options:  \n# mount -o remount /var/log"
+    },
+    "1.1.2.7.1": {
+        "title": "Ensure separate partition exists for /var/log/audit \n(Automated)",
+        "audit": "Run the following command and verify output shows /var/log/audit  is mounted:  \n# findmnt -kn /var/log/audit  \n \n/var/log/audit /dev/sdb ext4   rw,nosuid,nodev,noexec,relatime,seclabel",
+        "remediation": "For new installations, during installation create a custom partition setup and specify a \nseparate partition for /var/log/audit . \nFor systems that were previously installed, create a new partition and configure \n/etc/fstab  as appropriate."
+    },
+    "1.1.2.7.2": {
+        "title": "Ensure nodev option set on /var/log/audit partition \n(Automated)",
+        "audit": "- IF - a separate partition exists for /var/log/audit , verify that the nodev  option is set.  \nRun the following command to verify that the nodev  mount option is set.  \nExample:  \n# findmnt -kn /var/log/audit | grep -v nodev \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /var/log/audit . \nEdit the /etc/fstab  file and add nodev  to the fourth field (mounting options) for the \n/var/log/audit  partition.  \nExample:  \n<device> /var/log/audit    <fstype>     \ndefaults,rw,nosuid,nodev,noexec,relatime  0 0  \nRun the following command to remount /var/log/audit  with the configured options:  \n# mount -o remount /var/log/audit"
+    },
+    "1.1.2.7.3": {
+        "title": "Ensure nosuid option set on /var/log/audit partition \n(Automated)",
+        "audit": "- IF - a separate partition exists for /var/log/audit , verify that the nosuid  option is \nset. \nRun the following command to verify that the nosuid  mount option is set.  \nExample:  \n# findmnt -kn /var/log/audit | grep -v nosuid  \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /var/log/audit . \nEdit the /etc/fstab  file and add nosuid  to the fourth field (mounting options) for the \n/var/log/audit  partition.  \nExample:  \n<device> /var/log/audit    <fstype>     \ndefaults,rw,nosuid,nodev,noexec,relatime  0 0  \nRun the following command to remount /var/log/audit  with the configured options:  \n# mount -o remount /var/log/audit"
+    },
+    "1.1.2.7.4": {
+        "title": "Ensure noexec option set on /var/log/audit partition \n(Automated)",
+        "audit": "- IF - a separate partition exists for /var/log/audit , verify that the noexec  option is \nset. \nRun the following command to verify that the noexec  mount option is set.  \nExample:  \n# findmnt -kn /var/log/audit | grep -v noexec  \n \nNothing should be returned",
+        "remediation": "- IF - a separate partition exists for /var/log/audit . \nEdit the /etc/fstab  file and add noexec  to the fourth field (mounting options) for the \n/var/log/audit  partition.  \nExample:  \n<device> /var/log/audit    <fstype>     \ndefaults,rw,nosuid,nodev,noexec,relatime  0 0  \nRun the following command to remount /var/log/audit  with the configured options:  \n# mount -o remount /var/log/audit"
+    }
+}
