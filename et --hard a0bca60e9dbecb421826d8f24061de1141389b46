@@ -1,0 +1,36 @@
+[33mcommit b77d96335a3347eeb9ccc99ab2040d7bc70f6d75[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Avadhutgiri <avadg252@gmail.com>
+Date:   Mon Sep 30 06:03:31 2024 +0530
+
+    Total Rule Generation Script Created
+
+[33mcommit b5fbcde1a60865d5d7c06bc34eb5210f5d3d60c8[m
+Merge: 36fc8aa a0bca60
+Author: Avadhutgiri <avadg252@gmail.com>
+Date:   Mon Sep 30 05:59:52 2024 +0530
+
+    Merge branch 'master' of github.com:Spartan-71/BMC-Hackathon
+
+[33mcommit 36fc8aa02c3d92b8215881231e49492de765a8be[m
+Author: Avadhutgiri <avadg252@gmail.com>
+Date:   Mon Sep 30 05:42:25 2024 +0530
+
+    Bash Generation for a complete rule done along with database connection
+
+[33mcommit a0bca60e9dbecb421826d8f24061de1141389b46[m
+Author: siddhesh <siddheshsangale0705@gmail.com>
+Date:   Mon Sep 30 02:42:44 2024 +0530
+
+    almost there
+
+[33mcommit 17cf14cf3bd44af0b993a003e7b9ce87cfdfe0e0[m
+Author: Avadhutgiri <avadg252@gmail.com>
+Date:   Sun Sep 29 23:23:49 2024 +0530
+
+    Integration Done
+
+[33mcommit 7260767e34c17eb74f265d641164b005523f78cc[m
+Author: siddhesh <siddheshsangale0705@gmail.com>
+Date:   Sun Sep 29 02:21:59 2024 +0530
+
+    first commit
