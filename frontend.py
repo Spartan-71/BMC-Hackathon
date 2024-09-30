@@ -84,33 +84,22 @@ if uploaded_file is not None:
             st.session_state.uploaded_file = uploaded_file
         else:
             st.session_state.file_uploaded = False
-<<<<<<< HEAD
-
-=======
->>>>>>> a0bca60e9dbecb421826d8f24061de1141389b46
 
 # Only show the following options if the file has been successfully uploaded
 if st.session_state.file_uploaded:
     st.markdown("## Script Generation Options")
-<<<<<<< HEAD
 
     # Fetch Rules Button
     if 'selected_rule_group_id' not in st.session_state:
         st.session_state.selected_rule_group_id = None
-=======
->>>>>>> a0bca60e9dbecb421826d8f24061de1141389b46
 
     # Fetch Rules
     rules_response = query_rules()
     if rules_response:
         rules = rules_response.get("queried_rules", [])
         if rules:
-<<<<<<< HEAD
             # Selection options: Hierarchical rule group
             col1, col2 = st.columns([2,3])  # Adjust the column width for better centering
-=======
-            col1, col2 = st.columns([2, 3])
->>>>>>> a0bca60e9dbecb421826d8f24061de1141389b46
             with col1:
                 selected_rule_group = st.selectbox(
                     "Select Rule Group",
@@ -124,7 +113,6 @@ if st.session_state.file_uploaded:
                 sub_rules_response = query_sub_rules(st.session_state.selected_rule_group_id)
                 if sub_rules_response:
                     sub_rules = sub_rules_response.get("sub_rules", [])
-<<<<<<< HEAD
 
                     # Add "All" option to the sub-rules selection
                     sub_rules_options = ["all: All Sub-Rules"] + [
@@ -187,60 +175,6 @@ if st.session_state.file_uploaded:
                 pyperclip.copy(st.session_state.current_script)
                 st.success("Current script copied to clipboard.")
 
-=======
-                    with col2:
-                        if sub_rules:
-                            selected_sub_rule = st.selectbox(
-                                "Select Sub-Rule",
-                                options=sub_rules,
-                                format_func=lambda x: f"{x['id']}: {x['description']}",
-                                key="sub_rule"
-                            )
-                            selected_sub_rule_id = selected_sub_rule['id']
-                        else:
-                            selected_sub_rule_id = st.session_state.selected_rule_group_id
-                            st.info("No sub-rules available. Using main rule.")
-
-    # Generate Selected Rule Script button
-    if st.button("Generate Selected Rule Script", key="generate_selected"):
-        with st.spinner("Generating script..."):
-            script_response = generate_selected_rule_script(st.session_state.selected_rule_group_id, selected_sub_rule_id)
-        if script_response:
-            if isinstance(script_response, dict):
-                script = script_response.get('bash_script', 'No script generated.')
-            else:
-                script = script_response
-            st.session_state.current_script = script
-            st.session_state.script_history.append((selected_sub_rule_id, script))
-            add_to_history(f"Generated script for Rule ID {selected_sub_rule_id}")
-            st.success("Script generated successfully!")
-        else:
-            st.error("Failed to generate script.")
-
-    # Generate Full Script Button
-    if st.button("Generate Full Script", key="generate_full"):
-        with st.spinner("Generating full script..."):
-            full_script_response = generate_full_script(st.session_state.uploaded_file)
-        if full_script_response:
-            script = full_script_response.get("combined_script", "No script generated.")
-            st.session_state.current_script = script
-            add_to_history("Generated full script")
-            st.success("Full script generated successfully!")
-        else:
-            st.error("Failed to generate full script.")
-
-    # Display current script
-    if st.session_state.current_script:
-        st.markdown("### Current Script")
-        st.text_area("Generated Script", st.session_state.current_script, height=300, disabled=True, key="current_script")
-        
-        # Create two equally sized columns for Copy and Download buttons
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("Copy Current Script", key="copy_current"):
-                pyperclip.copy(st.session_state.current_script)
-                st.success("Current script copied to clipboard!")
->>>>>>> a0bca60e9dbecb421826d8f24061de1141389b46
         with col2:
             buffer = io.BytesIO()
             buffer.write(st.session_state.current_script.encode())
@@ -248,46 +182,10 @@ if st.session_state.file_uploaded:
             st.download_button(
                 label="Download Script",
                 data=buffer,
-<<<<<<< HEAD
                 file_name="generated_script_{selected_os.lower()}.sh",
                 mime="text/x-sh",
                 key="download_script"
             )
-=======
-                file_name="generated_script.sh",
-                mime="text/x-sh",
-                key="download_script"
-            )
-
-    # Display history
-    if st.session_state.script_history:
-        st.markdown("### Script History")
-        for i, (rule_id, hist_script) in enumerate(reversed(st.session_state.script_history)):
-            with st.expander(f"Script for Rule ID {rule_id} (#{len(st.session_state.script_history)-i})"):
-                st.text_area(f"Script {len(st.session_state.script_history)-i}", 
-                            hist_script,
-                            height=250,
-                            disabled=True,
-                            key=f"hist_script_{i}")
-                # Create two equally sized columns for Copy and Download buttons
-                col1, col2 = st.columns(2)
-                with col1:
-                    if st.button(f"Copy Script #{len(st.session_state.script_history)-i}", key=f"copy_hist_{i}"):
-                        pyperclip.copy(hist_script)
-                        st.success(f"Script #{len(st.session_state.script_history)-i} copied to clipboard!")
-                with col2:
-                    buffer = io.BytesIO()
-                    buffer.write(hist_script.encode())
-                    buffer.seek(0)
-                    st.download_button(
-                        label=f"Download Script #{len(st.session_state.script_history)-i}",
-                        data=buffer,
-                        file_name=f"script_{rule_id}.sh",
-                        mime="text/x-sh",
-                        key=f"download_hist_{i}"
-                    )
-
->>>>>>> a0bca60e9dbecb421826d8f24061de1141389b46
 
     if st.session_state.script_history:
       st.markdown("## Script Generation History")
@@ -358,12 +256,9 @@ st.markdown("""
     .stTextArea textarea {
         background-color: #333;
         color: white;
-<<<<<<< HEAD
     }
     .stSelectbox {
         margin-bottom: 20px;
-=======
->>>>>>> a0bca60e9dbecb421826d8f24061de1141389b46
     }
 </style>
 """, unsafe_allow_html=True)

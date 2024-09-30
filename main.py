@@ -5,11 +5,7 @@ import os
 import json
 from extract_rules import extract_text_from_pdf, extract_rules  # Import functions
 import toai
-<<<<<<< HEAD
 from motor.motor_asyncio import AsyncIOMotorClient 
-=======
-from motor.motor_asyncio import AsyncIOMotorClient  # Import Motor for MongoDB
->>>>>>> a0bca60e9dbecb421826d8f24061de1141389b46
 
 app = FastAPI()
 
@@ -150,7 +146,6 @@ async def query_sub_rules(rule_id: str):
     sub_rules = [{"id": sub_id, "description": sub_data['title']} for sub_id, sub_data in rule['sub_rules'].items()]
     return {"sub_rules": sub_rules}
 
-<<<<<<< HEAD
 # Function to generate script for specific rule or all sub-rules if "all" is selected
 async def generate_script_for_rule(rule_id: str) -> str:
     global extracted_rules
@@ -199,9 +194,6 @@ async def generate_subrule_script(rule_id: str, sub_id: str) -> str:
     return toai_output
 
 # API to generate script for specific rule or all sub-rules if "all" is selected
-=======
-# API to generate script for specific rule
->>>>>>> a0bca60e9dbecb421826d8f24061de1141389b46
 @app.post("/scripts/generate/query")
 async def generate_query_script(rule_ids: List[str], sub_rule_ids: List[str] = None):
     generated_scripts = []
@@ -223,7 +215,6 @@ async def generate_query_script(rule_ids: List[str], sub_rule_ids: List[str] = N
     
     return {"generated_scripts": generated_scripts}
 
-<<<<<<< HEAD
 # API to query a specific sub-rule by rule_id and sub_id, or all sub-rules if "all" is selected
 @app.get("/rules/{rule_id}/sub/{sub_id}")
 async def get_sub_rule_by_id(rule_id: str, sub_id: str):
@@ -234,8 +225,6 @@ async def get_sub_rule_by_id(rule_id: str, sub_id: str):
     # Otherwise, generate the script for the specific sub-rule
     return await generate_subrule_script(rule_id, sub_id)
 
-=======
->>>>>>> a0bca60e9dbecb421826d8f24061de1141389b46
 # API to generate full script after file upload
 @app.post("/scripts/generate/full")
 async def generate_full_script(file: UploadFile = File(...)):
