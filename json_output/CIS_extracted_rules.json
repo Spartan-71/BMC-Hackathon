@@ -1,0 +1,365 @@
+{
+    "7": {
+        "description": "",
+        "sub_rules": {
+            "7.1.1": {
+                "id": "7.1.1",
+                "title": "Ensure permissions on /etc/passwd are configured \n(Automated)",
+                "audit": "Run the following command to verify /etc/passwd  is mode 644 or more restrictive, Uid \nis 0/root  and Gid is 0/root : \n# stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)'  /etc/passwd  \n \nAccess: (0644/ -rw-r--r--)  Uid: ( 0/ root) Gid: ( 0/ root)",
+                "remediation": "Run the following commands to remove excess permissions, set owner, and set group \non /etc/passwd : \n# chmod u -x,go-wx /etc/passwd  \n# chown root:root /etc/passwd",
+                "audit_command": "stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)'  /etc/passwd  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "chmod u -x,go-wx /etc/passwd",
+                    "chown root:root /etc/passwd"
+                ]
+            },
+            "7.1.2": {
+                "id": "7.1.2",
+                "title": "Ensure permissions on /etc/passwd - are configured \n(Automated)",
+                "audit": "Run the following command to verify /etc/passwd - is mode 644 or more restrictive, \nUid is 0/root  and Gid is 0/root : \n# stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: { %g/ %G)' /etc/passwd - \n \nAccess: (0644/ -rw-r--r--)  Uid: ( 0/ root) Gid: { 0/ root)",
+                "remediation": "Run the following commands to remove excess permissions, set owner, and set group \non /etc/passwd -: \n# chmod u -x,go-wx /etc/passwd - \n# chown root:root /etc/passwd -",
+                "audit_command": "stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: { %g/ %G)' /etc/passwd - ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "chmod u -x,go-wx /etc/passwd -",
+                    "chown root:root /etc/passwd -"
+                ]
+            },
+            "7.1.3": {
+                "id": "7.1.3",
+                "title": "Ensure permissions on /etc/group are configured \n(Automated)",
+                "audit": "Run the following command to verify /etc/group  is mode 644 or more restrictive, Uid \nis 0/root  and Gid is 0/root : \n# stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)' /etc/group  \n \nAccess: (0644/ -rw-r--r--)  Uid: ( 0/ root) Gid: ( 0/ root)",
+                "remediation": "Run the following commands to remove excess permissions, set owner, and set group \non /etc/group : \n# chmod u -x,go-wx /etc/group  \n# chown root:root /etc/group",
+                "audit_command": "stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)' /etc/group  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "chmod u -x,go-wx /etc/group",
+                    "chown root:root /etc/group"
+                ]
+            },
+            "7.1.4": {
+                "id": "7.1.4",
+                "title": "Ensure permissions on /etc/group - are configured \n(Automated)",
+                "audit": "Run the following command to verify /etc/group - is mode 644 or more restrictive, Uid \nis 0/root  and Gid is 0/root : \n# stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)'  /etc/group - \n \nAccess: (0644/ -rw-r--r--)  Uid: ( 0/ root) Gid: ( 0/ root)",
+                "remediation": "Run the following commands to remove excess permissions, set owner, and set group \non /etc/group -: \n# chmod u -x,go-wx /etc/group - \n# chown root:root /etc/group -",
+                "audit_command": "stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)'  /etc/group - ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "chmod u -x,go-wx /etc/group -",
+                    "chown root:root /etc/group -"
+                ]
+            },
+            "7.1.5": {
+                "id": "7.1.5",
+                "title": "Ensure permissions on /etc/shadow are configured \n(Automated)",
+                "audit": "Run the following command to verify /etc/shadow  is mode 640 or more restrictive, Uid \nis 0/root  and Gid is 0/root  or ({GID}/ shadow):  \n# stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)'  /etc/shadow  \nExample:  \nAccess: (0640/ -rw-r-----)  Uid: ( 0/ root) Gid: ( 42/ shadow)",
+                "remediation": "Run one of the following commands to set ownership of /etc/shadow  to root  and \ngroup to either root  or shadow : \n# chown root:shadow /etc/shadow  \n  -OR- \n# chown root:root /etc/shadow  \nRun the following command to remove excess permissions form /etc/shadow : \n# chmod u -x,g-wx,o-rwx /etc/shadow",
+                "audit_command": "stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)'  /etc/shadow  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "chown root:shadow /etc/shadow",
+                    "chown root:root /etc/shadow",
+                    "chmod u -x,g-wx,o-rwx /etc/shadow"
+                ]
+            },
+            "7.1.6": {
+                "id": "7.1.6",
+                "title": "Ensure permissions on /etc/shadow - are configured \n(Automated)",
+                "audit": "Run the following command to verify /etc/shadow - is mode 640 or more restrictive, \nUid is 0/root  and Gid is 0/root  or {GID}/shadow : \n# stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)'  /etc/shadow - \nExample:  \nAccess: (0640/ -rw-r-----)  Uid: ( 0/ root) Gid: ( 42/ shadow)",
+                "remediation": "Run one of the following commands to set ownership of /etc/shadow - to root  and \ngroup to either root  or shadow : \n# chown root:shadow /etc/shadow - \n  -OR- \n# chown root:root /etc/shadow - \nRun the following command to remove excess permissions form /etc/shadow -: \n# chmod u -x,g-wx,o-rwx /etc/shadow -",
+                "audit_command": "stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)'  /etc/shadow - ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "chown root:shadow /etc/shadow -",
+                    "chown root:root /etc/shadow -",
+                    "chmod u -x,g-wx,o-rwx /etc/shadow -"
+                ]
+            },
+            "7.1.7": {
+                "id": "7.1.7",
+                "title": "Ensure permissions on /etc/gshadow are configured \n(Automated)",
+                "audit": "Run the following command to verify /etc/gshadow  is mode 640 or more restrictive, \nUid is 0/root  and Gid is 0/root  or `{GID}/shadow:  \n# stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)'  /etc/gshadow  \nExample:  \nAccess: (0640/ -rw-r-----)  Uid: ( 0/ root) Gid: ( 42/ shadow)",
+                "remediation": "Run one of the following commands to set ownership of /etc/gshadow  to root  and \ngroup to either root  or shadow : \n# chown root:shadow /etc/gshadow  \n  -OR- \n# chown root:root /etc/gshadow  \nRun the following command to remove excess permissions form /etc/gshadow : \n# chmod u -x,g-wx,o-rwx /etc/gshadow",
+                "audit_command": "stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)'  /etc/gshadow  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "chown root:shadow /etc/gshadow",
+                    "chown root:root /etc/gshadow",
+                    "chmod u -x,g-wx,o-rwx /etc/gshadow"
+                ]
+            },
+            "7.1.8": {
+                "id": "7.1.8",
+                "title": "Ensure permissions on /etc/gshadow - are configured \n(Automated)",
+                "audit": "Run the following command to verify /etc/gshadow - is mode 640 or more restrictive, \nUid is 0/root  and Gid is 0/root  or {GID}/shadow : \n# stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)'  /etc/gshadow - \nExample:  \nAccess: (0640/ -rw-r-----)  Uid: ( 0/ root) Gid: ( 42/ shadow)",
+                "remediation": "Run one of the following commands to set ownership of /etc/gshadow - to root  and \ngroup to either root  or shadow : \n# chown root:shadow /etc/gshadow - \n  -OR- \n# chown root:root /etc/gshadow - \nRun the following command to remove excess permissions form /etc/gshadow -: \n# chmod u -x,g-wx,o-rwx /etc/gshadow -",
+                "audit_command": "stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)'  /etc/gshadow - ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "chown root:shadow /etc/gshadow -",
+                    "chown root:root /etc/gshadow -",
+                    "chmod u -x,g-wx,o-rwx /etc/gshadow -"
+                ]
+            },
+            "7.1.9": {
+                "id": "7.1.9",
+                "title": "Ensure permissions on /etc/shells are configured \n(Automated)",
+                "audit": "Run the following command to verify /etc/shells  is mode 644 or more restrictive, Uid \nis 0/root  and Gid is 0/root : \n# stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)' /etc/shells  \n \nAccess: (0644/ -rw-r--r--)  Uid: ( 0/ root) Gid: ( 0/ root)",
+                "remediation": "Run the following commands to remove excess permissions, set owner, and set group \non /etc/shells : \n# chmod u -x,go-wx /etc/shells  \n# chown root:root /etc/shells",
+                "audit_command": "stat -Lc 'Access: (%#a/%A)  Uid: ( %u/ %U) Gid: ( %g/ %G)' /etc/shells  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "chmod u -x,go-wx /etc/shells",
+                    "chown root:root /etc/shells"
+                ]
+            },
+            "7.1.10": {
+                "id": "7.1.10",
+                "title": "Ensure permissions on /etc/security/opasswd are \nconfigured (Automated)",
+                "audit": "Run the following commands to verify /etc/security/opasswd  and \n/etc/security/opasswd.old  are mode 600 or more restrictive, Uid is 0/root  and \nGid is 0/root  if they exist:  \n#  [ -e \"/etc/security/opasswd\" ] && stat -Lc '%n Access: (%#a/%A)  Uid: ( \n%u/ %U) Gid: ( %g/ %G)' /etc/security/opasswd  \n \n/etc/security/opasswd Access: (0600/ -rw-------)  Uid: ( 0/ root) Gid: ( 0/ \nroot) \n -OR- \nNothing is returned  \n#  [ -e \"/etc/security/opasswd.old\" ] && stat -Lc '%n Access: (%#a/%A)  Uid: \n( %u/ %U) Gid: ( %g/ %G)' /etc/security/opasswd.old  \n \n/etc/security/opasswd.old Access: (0600/ -rw-------)  Uid: ( 0/ root) Gid: ( \n0/ root)  \n -OR- \nNothing is returned  \n  Page 953",
+                "remediation": "Run the following commands to remove excess permissions, set owner, and set group \non /etc/security/opasswd  and /etc/security/opasswd.old  is they exist:  \n# [ -e \"/etc/security/opasswd\" ] && chmod u -x,go-rwx /etc/security/opasswd  \n# [ -e \"/etc/security/opasswd\" ] && chown root:root /etc/security/opasswd  \n# [ -e \"/etc/security/opasswd.old\" ] && chmod u -x,go-rwx \n/etc/security/opasswd.old  \n# [ -e \"/etc/security/op asswd.old\" ] && chown root:root \n/etc/security/opasswd.old",
+                "audit_command": "[ -e \"/etc/security/opasswd\" ] && stat -Lc '%n Access: (%#a/%A)  Uid: ( \n[ -e \"/etc/security/opasswd.old\" ] && stat -Lc '%n Access: (%#a/%A)  Uid: ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "[ -e \"/etc/security/opasswd\" ] && chmod u -x,go-rwx /etc/security/opasswd",
+                    "[ -e \"/etc/security/opasswd\" ] && chown root:root /etc/security/opasswd",
+                    "[ -e \"/etc/security/opasswd.old\" ] && chmod u -x,go-rwx",
+                    "[ -e \"/etc/security/op asswd.old\" ] && chown root:root"
+                ]
+            },
+            "7.1.11": {
+                "id": "7.1.11",
+                "title": "Ensure world writable files and directories are secured \n(Automated)",
+                "audit": "Run the following script to verify:  \nNo world writable files exist  \nNo world writable directories without the sticky bit exist  Page 955 #!/usr/bin/env bash  \n \n{ \n   l_output=\"\" l_output2=\"\"  \n   l_smask='01000'  \n   a_file=(); a_dir=() # Initialize arrays  \n   a_path=(! -path \"/run/user/*\" -a ! -path \"/proc/*\" -a ! -path \n\"*/containerd/*\" -a ! -path \"*/kubelet/pods/*\" -a ! -path \n\"*/kubelet/plugins/* \" -a ! -path \"/sys/*\" -a ! -path \"/snap/*\")  \n   while IFS= read -r l_mount; do  \n      while IFS= read -r -d $'\\0' l_file; do  \n         if [ -e \"$l_file\" ]; then  \n            [ -f \"$l_file\" ] && a_file+=(\"$l_file\") # Add WR files  \n            if [ -d \"$l_file\" ] ; then # Add directories w/o sticky bit  \n               l_mode=\"$(stat -Lc '%#a' \"$l_file\")\"  \n               [ ! $(( $l_mode & $l_smask )) -gt 0 ] && a_dir+=(\"$l_file\")  \n            fi \n         fi \n      done < <(find \"$l_mount\" -xdev \\( \"${a_path[@]}\" \\) \\( -type f -o -type \nd \\) -perm -0002 -print0 2> /dev/null)  \n   done < <(findmnt -Dkerno fstype,target | awk '($1 !~ \n/^\\s*(nfs|proc|smb|vfat|iso9660|efivarfs|selinuxfs)/ && $2 !~ \n/^(\\/run\\/user\\/|\\/tmp|\\/var\\/tmp)/){print $2}')  \n   if ! (( ${#a_file[@]} > 0 )); t hen \n      l_output=\"$l_output \\n  - No world writable files exist on the local \nfilesystem.\"  \n   else \n      l_output2=\"$l_output2 \\n - There are \\\"$(printf '%s' \"${#a_file[@]}\") \\\" \nWorld writable files on the system. \\n   - The following is a list of World \nwritable files: \\n$(printf '%s \\n' \"${a_file[@]}\") \\n   - end of list \\n\" \n   fi \n   if ! (( ${#a_dir[@]} > 0 )); then  \n      l_output=\"$l_output \\n  - Sticky bit is set on world writable \ndirectories on the local filesystem.\"  \n   else \n      l_output2=\"$l_output2 \\n - There are \\\"$(printf '%s' \"${#a_dir[@]}\") \\\" \nWorld writable directories without the sticky bit on the system. \\n   - The \nfollowing is a list of World writable directories without the sticky \nbit:\\n$(printf '%s \\n' \"${a_dir[@]}\") \\n   - end of list \\n\" \n   fi \n   unset a_path; unset a_arr; unset a_file; unset a_dir # Remove arrays  \n   # If l_output2 is empty, we pass  \n   if [ -z \"$l_output2\" ]; then  \n      echo -e \"\\n- Audit Result: \\n  ** PASS ** \\n - * Correctly configured * \n:\\n$l_output \\n\" \n   else \n      echo -e \"\\n- Audit Result: \\n  ** FAIL ** \\n - * Reasons for audit \nfailure * : \\n$l_output2\"  \n      [ -n \"$l_output\" ] && echo -e \"- * Correctly configured * \n:\\n$l_output \\n\" \n   fi \n} \nNote:  On systems with a large number of files and/or directories, this audit may be a \nlong running process  Page 956",
+                "remediation": "World Writable Files:  \no It is recommended that write access is removed from other  with the \ncommand ( chmod o-w <filename>  ), but always consult relevant vendor \ndocumentation to avoid breaking any application dependencies on a given \nfile. \nWorld Writable Directories:  \no Set the sticky bit on all world writable directories with the command ( \nchmod a+t <directory_name>  ) \nRun the following script to:  \nRemove other write permission from any world writable files  \nAdd the sticky bit to all world writable directories  \n#!/usr/bin/env bash  \n \n{ \n   l_smask='01000'  \n   a_file=(); a_dir=() # Initialize arrays  \n   a_path=(! -path \"/run/user/*\" -a ! -path \"/proc/*\" -a ! -path \n\"*/containerd/*\" -a ! -path \"*/kubelet/pods/*\" -a ! -path \n\"*/kubelet/plugins/*\" -a ! -path \"/sys/*\" -a ! -path \"/snap/*\")  \n   while IFS= read -r l_mount; do  \n      while IFS= read -r -d $'\\0' l_file; do  \n         if [ -e \"$l_file\" ]; then  \n            l_mode=\"$(stat -Lc '%#a' \"$l_file\")\"  \n            if [ -f \"$l_file\" ]; then # Remove excess permissions from WW \nfiles \n               echo -e \" - File: \\\"$l_file \\\" is mode: \\\"$l_mode \\\"\\n  - \nremoving write permission on \\\"$l_file \\\" from \\\"other\\\"\" \n               chmod o-w \"$l_file\"  \n            fi \n            if [ -d \"$l_file\" ]; then # Add sticky bit  \n               if [ ! $(( $l_mode & $l_smask )) -gt 0 ]; then  \n                  echo -e \" - Directory: \\\"$l_file \\\" is mode: \\\"$l_mode \\\" and \ndoesn't have the sticky bit set \\n  - Adding the sticky bit\"  \n                  chmod a+t \"$l_file\"  \n               fi \n            fi \n         fi \n      done < <(find \"$l_mount\" -xdev \\( \"${a_path[@]}\" \\) \\( -type f -o -type \nd \\) -perm -0002 -print0 2> /dev/null)  \n   done < <(findmnt -Dkerno fstype,target | awk '($1 !~ \n/^\\s*(nfs|proc|smb|vfat|iso9660|efivarfs|selinuxfs)/ && $2 !~ \n/^(\\/run\\/user\\/|\\/tmp|\\/var\\/tmp)/){print $2}')  \n} \nReferences:  \n1. NIST SP 800 -53 Rev. 5: AC -3. MP -2 Page 957 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 3.3 Configure Data Access Control Lists  \n Configure data access control lists based on a user\u2019s need to know. Apply data \naccess control lists, also known as access permissions, to local and remote file \nsystems, databases, and applications.  \u25cf \u25cf \u25cf \nv7 14.6 Protect Information through Access Control Lists  \n Protect all information stored on systems with file system, network share, \nclaims, application, or database specific access control lists. These controls will \nenforce the principle that only authorized individuals should have access to the \ninformation base d on their need to access the information as a part of their \nresponsibilities.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1222, T1222.002, T1548  TA0004, TA0005  M1022, M1028  Page 958",
+                "audit_command": "",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "!/usr/bin/env bash",
+                    "Initialize arrays",
+                    "a' \"$l_file\")\"",
+                    "Remove excess permissions from WW",
+                    "Add sticky bit",
+                    "'\\0' l_file; do",
+                    "l_file\" ]; then",
+                    "(stat -Lc '%#a' \"$l_file\")\"",
+                    "l_file\" ]; then # Remove excess permissions from WW",
+                    "l_file \\\" is mode: \\\"$l_mode \\\"\\n  -",
+                    "l_file \\\" from \\\"other\\\"\"",
+                    "l_file\"",
+                    "l_file\" ]; then # Add sticky bit",
+                    "(( $l_mode & $l_smask )) -gt 0 ]; then",
+                    "l_file \\\" is mode: \\\"$l_mode \\\" and",
+                    "l_file\"",
+                    "l_mount\" -xdev \\( \"${a_path[@]}\" \\) \\( -type f -o -type",
+                    "1 !~",
+                    "2 !~",
+                    "2}')",
+                    "chmod",
+                    "chmod",
+                    "chmod"
+                ]
+            },
+            "7.1.12": {
+                "id": "7.1.12",
+                "title": "Ensure no files or directories without an owner and a group \nexist (Automated)",
+                "audit": "Run the following script to verify no unowned or ungrouped files or directories exist:  Page 959 #!/usr/bin/env bash  \n \n{ \n   l_output=\"\" l_output2=\"\"  \n   a_nouser=(); a_nogroup=() # Initialize arrays  \n   a_path=(! -path \"/run/user/*\" -a ! -path \"/proc/*\" -a ! -path \n\"*/containerd/*\" -a ! -path \"*/kubelet/pods/*\" -a ! -path \n\"*/kubelet/plugins/*\" -a ! -path \"/sys/fs/cgroup/memory/*\" -a ! -path \n\"/var/*/private/*\")  \n   while IFS= read -r l_mount; do  \n      while IFS= read -r -d $'\\0' l_file; do  \n         if [ -e \"$l_file\" ]; then  \n            while IFS=: read -r l_user l_group; do  \n               [ \"$l_user\" = \"UNKN OWN\" ] && a_nouser+=(\"$l_file\")  \n               [ \"$l_group\" = \"UNKNOWN\" ] && a_nogroup+=(\"$l_file\")  \n            done < <(stat -Lc '%U:%G' \"$l_file\")  \n         fi \n      done < <(find \"$l_mount\" -xdev \\( \"${a_path[@]}\" \\) \\( -type f -o -type \nd \\) \\( -nouser -o -nogroup \\) -print0 2> /dev/null)  \n   done < <(findmnt -Dkerno fstype,target | awk '($1 !~ \n/^\\s*(nfs|proc|smb|vfat|iso9660|efivarfs|selinuxfs)/ && $2 !~ \n/^\\/run\\/user\\//){print $2}')  \n   if ! (( ${#a_nouser[@]} > 0 )); then  \n      l_output=\"$l_output \\n  - No files or directories without a owner exist \non the local filesystem.\"  \n   else \n      l_output2=\"$l_output2 \\n  - There are \\\"$(printf '%s' \n\"${#a_nouser[@]}\") \\\" unowned files or directories on the system. \\n   - The \nfollowing is a list of unowned files and/or  directories: \\n$(printf '%s \\n' \n\"${a_nouser[@]}\") \\n   - end of list\"  \n   fi \n   if ! (( ${#a_nogroup[@]} > 0 )); then  \n      l_output=\"$l_output \\n  - No files or directories without a group exist \non the local filesystem.\"  \n   else \n      l_output2=\"$l_output2 \\n  - There are \\\"$(printf '%s' \n\"${#a_nogroup[@]}\") \\\" ungrouped files or directories on the system. \\n   - The \nfollowing is a list of ungrouped files and/or directories: \\n$(printf '%s \\n' \n\"${a_nogroup[@]}\") \\n   - end of list\"  \n   fi  \n   unset a_path; unset a_arr  ; unset a_nouser; unset a_nogroup # Remove \narrays \n   if [ -z \"$l_output2\" ]; then # If l_output2 is empty, we pass  \n      echo -e \"\\n- Audit Result: \\n  ** PASS ** \\n - * Correctly configured * \n:\\n$l_output \\n\" \n   else \n      echo -e \"\\n- Audit Result: \\n  ** FAIL **\\n - * Reasons for audit \nfailure * : \\n$l_output2\"  \n      [ -n \"$l_output\" ] && echo -e \"\\n- * Correctly configured * \n:\\n$l_output \\n\" \n   fi \n} \nNote:  On systems with a large number of files and/or directories, this audit may be a \nlong running process  Page 960",
+                "remediation": "Remove or set ownership and group ownership of these files and/or directories to an \nactive user on the system as appropriate.  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: AC -3. MP -2 \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 3.3 Configure Data Access Control Lists  \n Configure data access control lists based on a user\u2019s need to know. Apply data \naccess control lists, also known as access permissions, to local and remote file \nsystems, databases, and applications.  \u25cf \u25cf \u25cf \nv7 14.6 Protect Information through Access Control Lists  \n Protect all information stored on systems with file system, network share, \nclaims, application, or database specific access control lists. These controls will \nenforce the principle that only authorized individuals should have access to the \ninformation base d on their need to access the information as a part of their \nresponsibilities.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1222, T1222.002  TA0007  M1022  Page 961",
+                "audit_command": "",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": []
+            },
+            "7.1.13": {
+                "id": "7.1.13",
+                "title": "Ensure SUID and SGID files are reviewed (Manual)",
+                "audit": "Run the following script to generate a list of SUID and SGID files:  \n#!/usr/bin/env bash  \n \n{ \n   l_output=\"\" l_output2=\"\"  \n   a_suid=(); a_sgid=() # initialize arrays  \n   while IFS= read -r l_mount; do  \n      while  IFS= read -r -d $'\\0' l_file; do  \n         if [ -e \"$l_file\" ]; then  \n            l_mode=\"$(stat -Lc '%#a' \"$l_file\" )\" \n            [ $(( $l_mode & 04000 )) -gt 0 ] && a_suid+=(\"$l_file\")  \n            [ $(( $l_mode & 02000 )) -gt 0 ] && a_sgid+=(\"$l_file\")  \n         fi \n      done < <(find \"$l_mount\" -xdev -type f \\( -perm -2000 -o -perm -4000 \\) \n-print0 2>/dev/null)  \n   done < <(findmnt -Dkerno fstype,target,options | awk '($1 !~ \n/^\\s*(nfs|proc|smb|vfat|iso9660|efivarfs|selinuxfs)/ && $2 !~ \n/^\\/run\\/user\\// && $3 !~/noexec/ && $3 !~/nosuid/) {print $2}')  \n   if ! (( ${#a_suid[@]} > 0 )); then  \n      l_output=\"$l_output \\n - No executable SUID files exist on the system\"  \n   else \n      l_output2=\"$l_output2 \\n - List of \\\"$(printf '%s' \"${#a_suid[@]}\") \\\" \nSUID executable files: \\n$(printf '%s \\n' \"${a_suid[@]}\") \\n - end of list -\\n\" \n   fi \n   if ! (( ${#a_sgid[@]} > 0 )); then  \n      l_output=\"$l_output \\n - No SGID files exist on the system\"  \n   else \n      l_output2=\"$l_output2 \\n - List of \\\"$(printf '%s' \"${#a_sgid[@]}\") \\\" \nSGID executable files: \\n$(printf '%s \\n' \"${a_sgid[@]}\") \\n - end of list -\\n\" \n   fi \n   [ -n \"$l_output2\" ] && l_output 2=\"$l_output2 \\n- Review the preceding \nlist(s) of SUID and/or SGID files to \\n- ensure that no rogue programs have \nbeen introduced onto the system. \\n\"  \n   unset a_arr; unset a_suid; unset a_sgid # Remove arrays  \n   # If l_output2 is empty, Nothing to report  \n   if [ -z \"$l_output2\" ]; then  \n      echo -e \"\\n- Audit Result: \\n$l_output \\n\" \n   else \n      echo -e \"\\n- Audit Result: \\n$l_output2 \\n\" \n      [ -n \"$l_output\" ] && echo -e \"$l_output \\n\" \n   fi \n} \nNote:  on systems with a large number of files, this may be a long running process",
+                "remediation": "Ensure that no rogue SUID or SGID programs have been introduced into the system. \nReview the files returned by the action in the Audit section and confirm the integrity of \nthese binaries.  Page 963 References:  \n1. NIST SP 800 -53 Rev. 5: CM -1, CM -2, CM -6, CM -7, IA-5, AC -3, MP -2 \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 3.3 Configure Data Access Control Lists  \n Configure data access control lists based on a user\u2019s need to know. Apply data \naccess control lists, also known as access permissions, to local and remote file \nsystems, databases, and applications.  \u25cf \u25cf \u25cf \nv7 14.6 Protect Information through Access Control Lists  \n Protect all information stored on systems with file system, network share, \nclaims, application, or database specific access control lists. These controls will \nenforce the principle that only authorized individuals should have access to the \ninformation base d on their need to access the information as a part of their \nresponsibilities.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1548, T1548.001  TA0004  M1028  Page 964 7.2 Local User and Group Settings  \nThis section provides guidance on securing aspects of the local users and groups.  \nNote:  The recommendations in this section check local users and groups. Any users or \ngroups from other sources such as LDAP will not be audited. In a domain environment \nsimilar checks should be performed against domain users and groups.  Page 965",
+                "audit_command": "!/usr/bin/env bash  ",
+                "audit_output": "no rogue programs have",
+                "remediation_command": []
+            },
+            "7.2.1": {
+                "id": "7.2.1",
+                "title": "Ensure accounts in /etc/passwd use shadowed passwords \n(Automated)",
+                "audit": "Run the following command and verify that no output is returned:  \n# awk -F: '($2 != \"x\" ) { print \"User: \\\"\" $1 \"\\\" is not set to shadowed \npasswords \"}' /etc/passwd",
+                "remediation": "Run the following command to set accounts to use shadowed passwords and migrate \npasswords in /etc/passwd  to /etc/shadow : \n# pwconv  \nInvestigate to determine if the account is logged in and what it is being used for, to \ndetermine if it needs to be forced off.  Page 966 References:  \n1. NIST SP 800 -53 Rev. 5: IA -5 \n2. PWCONV(8)  \nAdditional Information:  \nThe pwconv  command creates shadow from passwd  and an optionally existing shadow . \nThe pwunconv  command creates passwd  from passwd  and shadow  and then \nremoves shadow . \nThe grpconv  command creates gshadow  from group  and an optionally existing \ngshadow . \nThe grpunconv  command creates group  from group  and gshadow  and then \nremoves gshadow . \nThese four programs all operate on the normal and shadow password and group files: \n/etc/passwd , /etc/group , /etc/shadow , and /etc/gshadow . \nEach program acquires the necessary locks before conversion. pwconv  and grpconv  \nare similar. First, entries in the shadowed file which don't exist in the main file are \nremoved. Then, shadowed entries which don't have x' as the password in the \nmain file are updated. Any missing shadowed entries are added. \nFinally, passwords in the main file are replaced with x'. These programs \ncan be used for initial conversion as well to update the shadowed file if the main file is \nedited by hand.  \npwconv  will use the values of PASS_MIN_DAYS , PASS_MAX_DAYS , and PASS_WARN_AGE  \nfrom /etc/login.defs when adding new entries to /etc/shadow.  \npwunconv  and grpunconv  are similar. Passwords in the main file are updated from the \nshadowed file. Entries which exist in the main file but not in the shadowed file are left \nalone. Finally, the shadowed file is removed. Some password aging information is lost \nby pwunconv . It will convert what it can.  \n  Page 967 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 3.11 Encrypt Sensitive Data at Rest  \n Encrypt sensitive data at rest on servers, applications, and databases containing \nsensitive data. Storage -layer encryption, also known as server -side encryption, \nmeets the minimum requirement of this Safeguard. Additional encryption methods \nmay include app lication -layer encryption, also known as client -side encryption, \nwhere access to the data storage device(s) does not permit access to the plain -text \ndata.   \u25cf \u25cf \nv7 16.4 Encrypt or Hash all Authentication Credentials  \n Encrypt or hash with a salt all authentication credentials when stored.   \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1003, T1003.008  TA0003  M1027  Page 968",
+                "audit_command": "awk -F: '($2 != \"x\" ) { print \"User: \\\"\" $1 \"\\\" is not set to shadowed ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "pwconv"
+                ]
+            },
+            "7.2.2": {
+                "id": "7.2.2",
+                "title": "Ensure /etc/shadow password fields are not empty \n(Automated)",
+                "audit": "Run the following command and verify that no output is returned:  \n# awk -F: '($2 == \"\" ) { print $1 \" does not have a password \"}' /etc/shadow",
+                "remediation": "If any accounts in the /etc/shadow  file do not have a password, run the following \ncommand to lock the account until it can be determined why it does not have a \npassword:  \n# passwd -l <username>  \nAlso, check to see if the account is logged in and investigate what it is being used for to \ndetermine if it needs to be forced off.  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: IA -5 \n  Page 969 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 5.2 Use Unique Passwords  \n Use unique passwords for all enterprise assets. Best practice implementation \nincludes, at a minimum, an 8 -character password for accounts using MFA and a \n14-character password for accounts not using MFA.  \u25cf \u25cf \u25cf \nv7 4.4 Use Unique Passwords  \n Where multi -factor authentication is not supported (such as local administrator, \nroot, or service accounts), accounts will use passwords that are unique to that \nsystem.   \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1078, T1078.001, \nT1078.003  TA0003  M1027  Page 970",
+                "audit_command": "awk -F: '($2 == \"\" ) { print $1 \" does not have a password \"}' /etc/shadow",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "passwd -l <username>"
+                ]
+            },
+            "7.2.3": {
+                "id": "7.2.3",
+                "title": "Ensure all groups in /etc/passwd exist in /etc/group \n(Automated)",
+                "audit": "Run the following script to verify all GIDs in /etc/passwd  exist in /etc/group : \n#!/usr/bin/env bash  \n \n{ \n   a_passwd_group_gid=(\"$(awk -F: '{print $4}' /etc/passwd | sort -u)\") \n   a_group_gid=(\"$(awk -F: '{print $3}' /etc/group | sort -u)\") \n   a_passwd_group_diff=(\"$(printf '%s \\n' \"${a_group_gid[@]}\" \n\"${a_passwd_group_gid[@]}\" | sort | uniq -u)\") \n   while IFS= read -r l_gid; do  \n      awk -F: '($4 == '\"$l_gid\"') {print \"  - User: \\\"\" $1 \"\\\" has GID: \\\"\" \n$4 \"\\\" which does not exist in /etc/group\" }' /etc/passwd  \n   done < <(printf '%s \\n' \"${a_passwd_group_gid[@]}\" \n\"${a_passwd_group_diff[@]} \" | sort | uniq -D | uniq)  \n   unset a_passwd_group_gid; unset a_group_gid; unset a_passwd_group_diff  \n} \nNothing should be returned",
+                "remediation": "Analyze the output of the Audit step above and perform the appropriate action to correct \nany discrepancies found.  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: CM -1, CM -2, CM -6, CM -7, IA-5 Page 971 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 3.3 Configure Data Access Control Lists  \n Configure data access control lists based on a user\u2019s need to know. Apply \ndata access control lists, also known as access permissions, to local and remote \nfile systems, databases, and applications.  \u25cf \u25cf \u25cf \nv8 14.6 Train Workforce Members on Recognizing and \nReporting Security Incidents  \n Train workforce members to be able to recognize a potential incident and be \nable to report such an incident.   \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1222, T1222.002  TA0003  M1027  Page 972",
+                "audit_command": "!/usr/bin/env bash  \n4 \"\\\" which does not exist in /etc/group\" }' /etc/passwd  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": []
+            },
+            "7.2.4": {
+                "id": "7.2.4",
+                "title": "Ensure shadow group is empty (Automated)",
+                "audit": "Run the following commands and verify no results are returned:  \n# awk -F: '($1==\"shadow\") {print $NF}' /etc/group  \n# awk -F: '($4 == '\"$(getent group shadow | awk -F: '{print $3}' | xargs)\"') \n{print \"  - user: \\\"\" $1 \"\\\" primary group is the shadow group\"}' /etc/passwd",
+                "remediation": "Run the following command to remove all users from the shadow group  \n# sed -ri 's/(^shadow:[^:]*:[^:]*:)([^:]+$)/ \\1/' /etc/group  \nChange the primary group of any users with shadow as their primary group.  \n# usermod -g <primary group> <user>  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: IA -5 Page 973 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 3.3 Configure Data Access Control Lists  \n Configure data access control lists based on a user\u2019s need to know. Apply data \naccess control lists, also known as access permissions, to local and remote file \nsystems, databases, and applications.  \u25cf \u25cf \u25cf \nv7 14.6 Protect Information through Access Control Lists  \n Protect all information stored on systems with file system, network share, \nclaims, application, or database specific access control lists. These controls will \nenforce the principle that only authorized individuals should have access to the \ninformation base d on their need to access the information as a part of their \nresponsibilities.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1003, T1003.008  TA0005  M1022  Page 974",
+                "audit_command": "awk -F: '($1==\"shadow\") {print $NF}' /etc/group  \nawk -F: '($4 == '\"$(getent group shadow | awk -F: '{print $3}' | xargs)\"') ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "sed -ri 's/(^shadow:[^:]*:[^:]*:)([^:]+$)/ \\1/' /etc/group",
+                    "usermod -g <primary group> <user>",
+                    ")/ \\1/' /etc/group"
+                ]
+            },
+            "7.2.5": {
+                "id": "7.2.5",
+                "title": "Ensure no duplicate UIDs exist (Automated)",
+                "audit": "Run the following script and verify no results are returned:  \n#!/usr/bin/env bash  \n \n{ \n  while read -r l_count l_uid; do  \n    if [ \"$l_count\" -gt 1 ]; then  \n      echo -e \"Duplicate UID: \\\"$l_uid\\\" Users: \\\"$(awk -F: '($3 == n) { \nprint $1 }' n=$l_uid /etc/passwd | xargs) \\\"\" \n    fi \n  done < <(cut -f3 -d\":\" /etc/passwd | s ort -n | uniq -c) \n}",
+                "remediation": "Based on the results of the audit script, establish unique UIDs and review all files owned \nby the shared UIDs to determine which UID they are supposed to belong to.  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: CM -1, CM -2, CM -6, CM -7, IA-5 \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1078, T1078.001, \nT1078.003  TA0005  M1027  Page 975",
+                "audit_command": "!/usr/bin/env bash  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": []
+            },
+            "7.2.6": {
+                "id": "7.2.6",
+                "title": "Ensure no duplicate GIDs exist (Automated)",
+                "audit": "Run the following script and verify no results are returned:  \n#!/usr/bin/env bash  \n \n{ \n   while read -r l_count l_gid; do  \n      if [ \"$l_count\" -gt 1 ]; then  \n      echo -e \"Duplicate GID: \\\"$l_gid\\\" Groups: \\\"$(awk -F: '($3 == n) { \nprint $1 }' n=$l_gid /etc/group | xargs) \\\"\" \n    fi \n  done < <(cut -f3 -d\":\" /etc/group |  sort -n | uniq -c) \n}",
+                "remediation": "Based on the results of the audit script, establish unique GIDs and review all files \nowned by the shared GID to determine which group they are supposed to belong to.  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: CM -1, CM -2, CM -6, CM -7, IA-5 \nAdditional Information:  \nYou can also use the grpck  command to check for other inconsistencies in the \n/etc/group  file. Page 976 MITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1078, T1078.001, \nT1078.003  TA0005  M1027  Page 977",
+                "audit_command": "!/usr/bin/env bash  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": []
+            },
+            "7.2.7": {
+                "id": "7.2.7",
+                "title": "Ensure no duplicate user names exist (Automated)",
+                "audit": "Run the following script and verify no results are returned:  \n#!/usr/bin/env bash  \n \n{ \n   while read -r l_count l_user; do  \n      if [ \"$l_count\" -gt 1 ]; then  \n         echo -e \"Duplicate User: \\\"$l_user \\\" Users: \\\"$(awk -F: '($1 == n) { \nprint $1 }' n=$l_user /etc/passwd | xargs) \\\"\" \n      fi \n   done < <(cut -f1 -d\":\" /etc/group | sort -n | uniq -c) \n}",
+                "remediation": "Based on the results of the audit script, establish unique user names for the users. File \nownerships will automatically reflect the change as long as the users have unique UIDs.  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: CM -1, CM -2, CM -6, CM -7, IA-5 Page 978 MITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1078, T1078.001, \nT1078.003  TA0004  M1027  Page 979",
+                "audit_command": "!/usr/bin/env bash  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": []
+            },
+            "7.2.8": {
+                "id": "7.2.8",
+                "title": "Ensure no duplicate group names exist (Automated)",
+                "audit": "Run the following script and verify no results are returned:  \n#!/usr/bin/env bash  \n \n{ \n   while read -r l_count l_group; do  \n      if [ \"$l_count\" -gt 1 ]; then  \n         echo -e \"Duplicate Group: \\\"$l_group \\\" Groups: \\\"$(awk -F: '($1 == \nn) { print $1 }' n=$l_group /etc/group | xargs) \\\"\" \n      fi \n   done < <(cut -f1 -d\":\" /etc/group | sort -n | uniq -c) \n}",
+                "remediation": "Based on the results of the audit script, establish unique names for the user groups. File \ngroup ownerships will automatically reflect the change as long as the groups have \nunique GIDs.  \nReferences:  \n1. NIST SP 800 -53 Rev. 5: CM -1, CM -2, CM -6, CM -7, IA-5 Page 980 MITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1078, T1078.001, \nT1078.003  TA0004  M1027  Page 981",
+                "audit_command": "!/usr/bin/env bash  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": []
+            },
+            "7.2.9": {
+                "id": "7.2.9",
+                "title": "Ensure local interactive user home directories are \nconfigured (Automated)",
+                "audit": "Run the following script to Ensure:  \nlocal interactive user home directories exist  \nEnsure local interactive users own their home directories  \nEnsure local interactive user home directories are mode 750 or more restrictive  Page 982 #!/usr/bin/env bash  \n \n{ \n   l_output=\"\" l_output2=\"\" l_heout2=\"\" l_hoout2=\"\" l_haout2=\"\"  \n   l_valid_shells=\"^($( awk -F\\/ '$NF != \"nologin\" {print}' /etc/shells | sed \n-rn '/^\\//{s,/,\\\\\\\\/,g;p}' | paste -s -d '|' - ))$\" \n   unset a_uarr && a_uarr=() # Clear and initialize array  \n   while read -r l_epu l_eph; do # Populate array with users and user home \nlocation  \n      a_uarr+=(\"$l_epu $l_eph\")  \n   done <<< \"$(awk -v pat=\"$l_valid_shells\" -F: '$(NF) ~ pat { print $1 \" \" \n$(NF-1) }' /etc/passwd)\"  \n   l_asize=\"${#a_uarr[@]}\" # Here if we want to look at nu mber of users \nbefore proceeding  \n   [ \"$l_asize \" -gt \"10000\" ] && echo -e \"\\n  ** INFO ** \\n  - \\\"$l_asize \\\" \nLocal interactive users found on the system \\n  - This may be a long running \ncheck\\n\" \n   while read -r l_user l_home; do  \n      if [ -d \"$l_home\" ]; then \n         l_mask='0027'  \n         l_max=\"$( printf '%o' $(( 0777 & ~$l_mask)) )\"  \n         while read -r l_own l_mode; do  \n            [ \"$l_user\" != \"$l_own\" ] && l_hoout2=\"$l_hoout2 \\n  - User: \n\\\"$l_user \\\" Home \\\"$l_home \\\" is owned by: \\\"$l_own\\\"\" \n            if [ $(( $l_mode & $l_mask )) -gt 0 ]; then  \n               l_haout2=\"$l_haout2 \\n  - User: \\\"$l_user \\\" Home \\\"$l_home \\\" is \nmode: \\\"$l_mode \\\" should be mode: \\\"$l_max\\\" or more restrictive\"  \n            fi \n         done <<< \"$(stat -Lc '%U %#a' \"$l_home \")\" \n      else \n         l_heout2=\"$l_heout2 \\n  - User: \\\"$l_user \\\" Home \\\"$l_home \\\" Doesn't \nexist\" \n      fi \n   done <<< \"$(printf '%s \\n' \"${a_uarr[@]}\")\"  \n   [ -z \"$l_heout2\" ] && l_output=\"$l_output \\n   - home directories exist\" || \nl_output2=\"$l_output2$l_ heout2\" \n   [ -z \"$l_hoout2\" ] && l_output=\"$l_output \\n   - own their home directory\" \n|| l_output2=\"$l_output2$l_hoout2\"  \n   [ -z \"$l_haout2\" ] && l_output=\"$l_output \\n   - home directories are mode: \n\\\"$l_max\\\" or more restrictive\" || l_output2=\"$l_output2$l _haout2\"  \n   [ -n \"$l_output\" ] && l_output=\"  - All local interactive users:$l_output\"  \n   if [ -z \"$l_output2\" ]; then # If l_output2 is empty, we pass  \n      echo -e \"\\n- Audit Result: \\n  ** PASS ** \\n - * Correctly configured * \n:\\n$l_output\"  \n   else \n      echo -e \"\\n- Audit Result: \\n  ** FAIL ** \\n - * Reasons for audit \nfailure * : \\n$l_output2\"  \n      [ -n \"$l_output\" ] && echo -e \"\\n- * Correctly configured * \n:\\n$l_output\"  \n   fi \n} \n  Page 983",
+                "remediation": "If a local interactive users' home directory is undefined and/or doesn't exist, follow local \nsite policy and perform one of the following:  \nLock the user account  \nRemove the user from the system  \ncreate a directory for the user. If undefined, edit /etc/passwd  and add the \nabsolute path to the directory to the last field of the user.  \nRun the following script to:  \nRemove excessive permissions from local interactive users home directories  \nUpdate the home directory's owner  Page 984 #!/usr/bin/env bash  \n \n{ \n   l_output2=\"\"  \n   l_valid_shells=\"^($( awk -F\\/ '$NF != \"nologin\" {print}' /etc/shells | sed \n-rn '/^\\//{s,/,\\\\\\\\/,g;p}' | paste -s -d '|' - ))$\" \n   unset a_uarr && a_uarr=() # Clear and initialize array  \n   while read -r l_epu l_eph;  do # Populate array with users and user home \nlocation  \n      a_uarr+=(\"$l_epu $l_eph\")  \n   done <<< \"$(awk -v pat=\"$l_valid_shells\" -F: '$(NF) ~ pat { print $1 \" \" \n$(NF-1) }' /etc/passwd)\"  \n   l_asize=\"${#a_uarr[@]}\" # Here if we want to look at number of us ers \nbefore proceeding  \n   [ \"$l_asize \" -gt \"10000\" ] && echo -e \"\\n  ** INFO ** \\n  - \\\"$l_asize \\\" \nLocal interactive users found on the system \\n  - This may be a long running \nprocess\\n\" \n   while read -r l_user l_home; do  \n      if [ -d \"$l_home\" ]; then  \n         l_mask='0027'  \n         l_max=\"$( printf '%o' $(( 0777 & ~$l_mask)) )\"  \n         while read -r l_own l_mode; do  \n            if [ \"$l_user\" != \"$l_own\" ]; then  \n               l_output2=\"$l_output2 \\n  - User: \\\"$l_user \\\" Home \\\"$l_home \\\" \nis owned by: \\\"$l_own\\\"\\n  -  changing ownership to: \\\"$l_user \\\"\\n\" \n               chown \"$l_user\" \"$l_home\"  \n            fi \n            if [ $(( $l_mode & $l_mask )) -gt 0 ]; then  \n               l_output2=\"$l_output2 \\n  - User: \\\"$l_user \\\" Home \\\"$l_home \\\" \nis mode: \\\"$l_mode\\\" should be mode: \\\"$l_max\\\" or more restrictive \\n  -  \nremoving excess permissions \\n\" \n               chmod g-w,o-rwx \"$l_home\"  \n            fi \n         done <<< \"$(stat -Lc '%U %#a' \"$l_home\")\"  \n      else \n         l_output2=\"$l_output2 \\n  - User: \\\"$l_user\\\" Home \\\"$l_home \\\" \nDoesn't exist \\n  -  Please create a home in accordance with local site \npolicy\" \n      fi \n   done <<< \"$(printf '%s \\n' \"${a_uarr[@]}\")\"  \n   if [ -z \"$l_output2\" ]; then # If l_output2 is empty, we pass  \n      echo -e \" - No modification needed to local interactive users home \ndirectories\"  \n   else \n      echo -e \"\\n$l_output2\"  \n   fi \n} \n  Page 985 CIS Controls:  \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 3.3 Configure Data Access Control Lists  \n Configure data access control lists based on a user\u2019s need to know. Apply data \naccess control lists, also known as access permissions, to local and remote file \nsystems, databases, and applications.  \u25cf \u25cf \u25cf \nv7 14.6 Protect Information through Access Control Lists  \n Protect all information stored on systems with file system, network share, \nclaims, application, or database specific access control lists. These controls will \nenforce the principle that only authorized individuals should have access to the \ninformation base d on their need to access the information as a part of their \nresponsibilities.  \u25cf \u25cf \u25cf \n \nMITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1222, T1222.002  TA0005  M1022  Page 986",
+                "audit_command": "(NF-1) }' /etc/passwd)\"  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "!/usr/bin/env bash",
+                    "Clear and initialize array",
+                    "Populate array with users and user home",
+                    "a_uarr[@]}\" # Here if we want to look at number of us ers",
+                    "a' \"$l_home\")\"",
+                    "If l_output2 is empty, we pass",
+                    "( awk -F\\/ '$NF != \"nologin\" {print}' /etc/shells | sed",
+                    "\"",
+                    "l_epu $l_eph\")",
+                    "(awk -v pat=\"$l_valid_shells\" -F: '$(NF) ~ pat { print $1 \" \"",
+                    "(NF-1) }' /etc/passwd)\"",
+                    "{#a_uarr[@]}\" # Here if we want to look at number of us ers",
+                    "l_asize \" -gt \"10000\" ] && echo -e \"\\n  ** INFO ** \\n  - \\\"$l_asize \\\"",
+                    "l_home\" ]; then",
+                    "( printf '%o' $(( 0777 & ~$l_mask)) )\"",
+                    "l_user\" != \"$l_own\" ]; then",
+                    "l_output2 \\n  - User: \\\"$l_user \\\" Home \\\"$l_home \\\"",
+                    "l_own\\\"\\n  -  changing ownership to: \\\"$l_user \\\"\\n\"",
+                    "l_user\" \"$l_home\"",
+                    "(( $l_mode & $l_mask )) -gt 0 ]; then",
+                    "l_output2 \\n  - User: \\\"$l_user \\\" Home \\\"$l_home \\\"",
+                    "l_mode\\\" should be mode: \\\"$l_max\\\" or more restrictive \\n  -",
+                    "l_home\"",
+                    "(stat -Lc '%U %#a' \"$l_home\")\"",
+                    "l_output2 \\n  - User: \\\"$l_user\\\" Home \\\"$l_home \\\"",
+                    "(printf '%s \\n' \"${a_uarr[@]}\")\"",
+                    "l_output2\" ]; then # If l_output2 is empty, we pass",
+                    "l_output2\"",
+                    "chown",
+                    "chmod"
+                ]
+            },
+            "7.2.10": {
+                "id": "7.2.10",
+                "title": "Ensure local interactive user dot files access is configured \n(Automated)",
+                "audit": "Run the following script to verify local interactive user dot files:  \nDon't include .forward , .rhost , or .netrc  files \nAre mode 0644 or more restrictive  \nAre owned by the local interactive user  \nAre group owned by the user's primary group  \n.bash_history  is mode 0600 or more restrictive  \nNote:  If a .netrc  file is required, and follows local site policy, it should be mode 0600  or \nmore restrictive.  Page 987 #!/usr/bin/env bash  \n \n{ \n   a_output2=(); a_output3=()  \n   l_maxsize=\"1000\" # Maximum number of local interactive users before \nwarning (Default 1,000)  \n   l_valid_shells=\"^($( awk -F\\/ '$NF != \"nologin\" {print}' /etc/shells | sed \n-rn '/^\\//{s,/,\\\\\\\\/,g;p}' | paste -s -d '|' - ))$\" \n   a_user_and_home=() # Create array with local use rs and their home \ndirectories  \n   while read -r l_local_user l_local_user_home; do # Populate array with \nusers and user home location  \n      [[ -n \"$l_local_user\" && -n \"$l_local_user_home\" ]] && \na_user_and_home+=(\"$l_local_user:$l_local_user_home\")  \n   done <<< \"$(awk -v pat=\"$l_valid_shells\" -F: '$(NF) ~ pat { print $1 \" \" \n$(NF-1) }' /etc/passwd)\"  \n   l_asize=\"${#a_user_and_home[@]}\" # Here if we want to look at number of \nusers before proceeding  \n   [ \"${#a_user_and_home[@]}\" -gt \"$l_maxsize\" ] && printf '%s \\n' \"\" \"  ** \nINFO **\" \\ \n   \"  - \\\"$l_asize \\\" Local interactive users found on the system\" \\ \n   \"  - This may be a long running check\" \"\"  \n   file_access_chk()  \n   { \n      a_access_out=()  \n      l_max=\"$( printf '%o' $(( 0777 & ~$l_mask)) )\"  \n      if [ $(( $l_m ode & $l_mask )) -gt 0 ]; then  \n         a_access_out+=(\"  - File: \\\"$l_hdfile \\\" is mode: \\\"$l_mode \\\" and \nshould be mode: \\\"$l_max\\\" or more restrictive\")  \n      fi \n      if [[ ! \"$l_owner\" =~ ($l_user) ]]; then  \n         a_access_out+=(\"  - File: \\\"$l_hdfile \\\" owned by: \\\"$l_owner \\\" and \nshould be owned by \\\"${l_user//|/ or } \\\"\") \n      fi \n      if [[ ! \"$l_gowner\" =~ ($l_group) ]]; then  \n         a_access_out+=(\"  - File: \\\"$l_hdfile \\\" group owned by: \n\\\"$l_gowner \\\" and should be group owned by \\\"${l_group//|/ o r }\\\"\") \n      fi \n   } \n   while IFS=: read -r l_user l_home; do  \n      a_dot_file=(); a_netrc=(); a_netrc_warn=(); a_bhout=(); a_hdirout=()  \n      if [ -d \"$l_home\" ]; then  \n         l_group=\"$(id -gn \"$l_user\" | xargs)\";l_group=\"${l_group// /|}\"  \n         while IFS= read -r -d $'\\0' l_hdfile; do  \n            while read -r l_mode l_owner l_gowner; do  \n               case \"$(basename \"$l_hdfile\")\" in  \n                  .forward | .rhost )  \n                     a_dot_file+=(\"  - File: \\\"$l_hdfile \\\" exists\") ;;  \n                  .netrc )  \n                     l_mask='0177'; file_access_chk  \n                     if [ \"${#a_access_out[@]}\" -gt 0 ]; then  \n                        a_netrc+=(\"${a_access_out[@]}\")  \n                     else \n                        a_netrc_warn+=(\"    - File: \\\"$l_hdfile \\\" exists\")  \n                     fi ;; \n                  .bash_history )  \n                     l_mask='0177'; file_access_chk  Page 988                      [ \"${#a_access_out[@]}\" -gt 0 ] && \na_bhout+=(\"${a_access_out[@]}\") ;;  \n                  * ) \n                     l_mask='0133'; file_access_chk  \n                     [ \"${#a_access_out[@]}\" -gt 0 ] && \na_hdirout+=(\"${a_access_out[@]}\") ; ; \n               esac \n            done < <(stat -Lc '%#a %U %G' \"$l_hdfile\")  \n         done < <(find \"$l_home\" -xdev -type f -name '.*' -print0) \n      fi \n      if [[ \"${#a_dot_file[@]}\" -gt 0 || \"${#a_netrc[@]}\" -gt 0 || \n\"${#a_bhout[@]}\" -gt 0 || \"${#a_hdir out[@]}\" -gt 0 ]]; then  \n         a_output2+=(\" - User: \\\"$l_user \\\" Home Directory: \\\"$l_home \\\"\" \n\"${a_dot_file[@]}\" \"${a_netrc[@]}\" \"${a_bhout[@]}\" \"${a_hdirout[@]}\")  \n      fi \n      [ \"${#a_netrc_warn[@]}\" -gt 0 ] && a_output3+=(\" - User: \\\"$l_user \\\" \nHome Directory: \\\"$l_home \\\"\" \"${a_netrc_warn[@]}\")  \n   done <<< \"$(printf '%s \\n' \"${a_user_and_home[@]}\")\"  \n   if [ \"${#a_output2[@]}\" -le 0 ]; then # If l_output2 is empty, we pass  \n      [ \"${#a_output3[@]}\" -gt 0 ] && printf '%s \\n' \"  ** WARNING **\" \n\"${a_output3 [@]}\" \n      printf '%s \\n' \"- Audit Result:\" \"  ** PASS **\"  \n   else \n      printf '%s \\n' \"- Audit Result:\" \"  ** FAIL **\" \" - * Reasons for audit \nfailure * :\" \"${a_output2[@]}\" \"\"  \n      [ \"${#a_output3[@]}\" -gt 0 ] && printf '%s \\n' \"  ** WARNING **\" \n\"${a_out put3[@]}\"  \n   fi \n} \n  Page 989",
+                "remediation": "Making global modifications to users' files without alerting the user community can result \nin unexpected outages and unhappy users. Therefore, it is recommended that a \nmonitoring policy be established to report user dot file permissions and determine the \naction to be taken in accordance with site policy.  \nThe following script will:  \nremove excessive permissions on dot files within interactive users' home \ndirectories  \nchange ownership of dot files within interactive users' home directories to the \nuser \nchange group ownership of dot files within interactive users' home directories to \nthe user's primary group  \nlist .forward  and .rhost  files to be investigated and manually deleted  Page 990 #!/usr/bin/env bash  \n \n{ \n   a_output2=(); a_output3=()  \n   l_maxsize=\"1000\" # Maximum number of local interactive users before \nwarning (Default 1,000)  \n   l_valid_shells=\"^($( awk -F\\/ '$NF != \"nologin\" {print}' /etc/shells | sed \n-rn '/^\\//{s,/,\\\\\\\\/,g;p}' | p aste -s -d '|' - ))$\" \n   a_user_and_home=() # Create array with local users and their home \ndirectories  \n   while read -r l_local_user l_local_user_home; do # Populate array with \nusers and user home location  \n      [[ -n \"$l_local_user\" && -n \"$l_local_user_h ome\" ]] && \na_user_and_home+=(\"$l_local_user:$l_local_user_home\")  \n   done <<< \"$(awk -v pat=\"$l_valid_shells\" -F: '$(NF) ~ pat { print $1 \" \" \n$(NF-1) }' /etc/passwd)\"  \n   l_asize=\"${#a_user_and_home[@]}\" # Here if we want to look at number of \nusers before pr oceeding  \n   [ \"${#a_user_and_home[@]}\" -gt \"$l_maxsize\" ] && printf '%s \\n' \"\" \"  ** \nINFO **\" \\ \n   \"  - \\\"$l_asize \\\" Local interactive users found on the system\" \\ \n   \"  - This may be a long running check\" \"\"  \n   file_access_fix()  \n   { \n      a_access_out=()  \n      l_max=\"$( printf '%o' $(( 0777 & ~$l_mask)) )\"  \n      if [ $(( $l_mode & $l_mask )) -gt 0 ]; then  \n         printf '%s \\n' \"\" \"  - File: \\\"$l_hdfile \\\" is mode: \\\"$l_mode \\\" and \nshould be mode: \\\"$l_max\\\" or more restrictive\" \\ \n         \"     Updating fil e: \\\"$l_hdfile \\\" to be mode: \\\"$l_max\\\" or more \nrestrictive\"  \n         chmod \"$l_change\" \"$l_hdfile\"  \n      fi \n      if [[ ! \"$l_owner\" =~ ($l_user) ]]; then  \n         printf '%s \\n' \"\" \"  - File: \\\"$l_hdfile \\\" owned by: \\\"$l_owner \\\" and \nshould be owned by \\\"${l_user//|/ or } \\\"\" \\ \n         \"     Updating file: \\\"$l_hdfile \\\" to be owned by \\\"${l_user//|/ or \n}\\\"\" \n         chown \"$l_user\" \"$l_hdfile\"  \n      fi \n      if [[ ! \"$l_gowner\" =~ ($l_group) ]]; then  \n         printf '%s \\n' \"\" \"  - File: \\\"$l_hdfile \\\" group owned by: \n\\\"$l_gowner \\\" and should be group owned by \\\"${l_group//|/ or } \\\"\" \\ \n         \"     Updating file: \\\"$l_hdfile \\\" to be group owned by \n\\\"${l_group//|/ or } \\\"\" \n         chgrp \"$l_group\" \"$l_hdfile\"  \n      fi \n   } \n   while IFS=: read -r l_user l_home ; do \n      a_dot_file=(); a_netrc=(); a_netrc_warn=(); a_bhout=(); a_hdirout=()  \n      if [ -d \"$l_home\" ]; then  \n         l_group=\"$(id -gn \"$l_user\" | xargs)\";l_group=\"${l_group// /|}\"  \n         while IFS= read -r -d $'\\0' l_hdfile; do  \n            while rea d -r l_mode l_owner l_gowner; do  \n               case \"$(basename \"$l_hdfile\")\" in  \n                  .forward | .rhost )  \n                     a_dot_file+=(\"  - File: \\\"$l_hdfile \\\" exists\" \"    Page 991 Please review and manually delete this file\") ;;  \n                  .netrc )  \n                     l_mask='0177'; l_change=\"u -x,go-rwx\"; file_access_fix  \n                     a_netrc_warn+=(\"   - File: \\\"$l_hdfile \\\" exists\") ;;  \n                  .bash_history  ) \n                     l_mask='0177'; l_change=\"u -x,go-rwx\"; file_access_fix ;;  \n                  * ) \n                     l_mask='0133'; l_change=\"u -x,go-wx\"; file_access_fix ;;  \n               esac \n            done < <(stat -Lc '%#a %U %G' \"$l_hdfile\")  \n         done < <(find \"$l_home\" -xdev -type f -name '.*' -print0) \n      fi \n      [ \"${#a_dot_file[@]}\" -gt 0 ] && a_output2+=(\" - User: \\\"$l_user \\\" Home \nDirectory: \\\"$l_home \\\"\" \"${a_dot_file[@]}\")  \n      [ \"${#a_netrc_warn[@]}\" -gt 0 ] && a_output3+=(\" - User: \\\"$l_user \\\" \nHome Directory: \\\"$l_home \\\"\" \"${a_netrc_warn[@]}\")  \n   done <<< \"$(printf '%s \\n' \"${a_user_and_home[@]}\")\"  \n   [ \"${#a_output3[@]}\" -gt 0 ] && printf '%s \\n' \"\" \"  ** WARNING **\" \n\"${a_output3[@]}\" \"\"  \n   [ \"${#a_output2[@]}\" -gt 0 ] && printf ' %s\\n' \"\" \"${a_output2[@]}\"  \n} \nReferences:  \n1. NIST SP 800 -53 Rev. 5: CM -1, CM -2, CM -6, CM -7, IA-5 \nControls \nVersion  Control  IG 1 IG 2 IG 3 \nv8 3.3 Configure Data Access Control Lists  \n Configure data access control lists based on a user\u2019s need to know. Apply data \naccess control lists, also known as access permissions, to local and remote file \nsystems, databases, and applications.  \u25cf \u25cf \u25cf \nv7 14.6 Protect Information through Access Control Lists  \n Protect all information stored on systems with file system, network share, \nclaims, application, or database specific access control lists. These controls will \nenforce the principle that only authorized individuals should have access to the \ninformation base d on their need to access the information as a part of their \nresponsibilities.  \u25cf \u25cf \u25cf \n Page 992 MITRE ATT&CK Mappings:  \nTechniques / Sub -\ntechniques  Tactics  Mitigations  \nT1222, T1222.001, \nT1222.002, T1552, \nT1552.003, T1552.004  TA0005  M1022  \n \n \n Page 993 Appendix: Summary Table  \nCorrectly  \nYes No \n1 Initial Setup  \n1.1 Filesystem",
+                "audit_command": "(NF-1) }' /etc/passwd)\"  ",
+                "audit_output": "No specific audit output provided.",
+                "remediation_command": [
+                    "!/usr/bin/env bash",
+                    "Maximum number of local interactive users before",
+                    "Create array with local users and their home",
+                    "Populate array with",
+                    "a_user_and_home[@]}\" # Here if we want to look at number of",
+                    "a_user_and_home[@]}\" -gt \"$l_maxsize\" ] && printf '%s \\n' \"\" \"  **",
+                    "a %U %G' \"$l_hdfile\")",
+                    "a_dot_file[@]}\" -gt 0 ] && a_output2+=(\" - User: \\\"$l_user \\\" Home",
+                    "a_netrc_warn[@]}\" -gt 0 ] && a_output3+=(\" - User: \\\"$l_user \\\"",
+                    "a_output3[@]}\" -gt 0 ] && printf '%s \\n' \"\" \"  ** WARNING **\"",
+                    "a_output2[@]}\" -gt 0 ] && printf ' %s\\n' \"\" \"${a_output2[@]}\"",
+                    "( awk -F\\/ '$NF != \"nologin\" {print}' /etc/shells | sed",
+                    "\"",
+                    "l_local_user\" && -n \"$l_local_user_h ome\" ]] &&",
+                    "l_local_user:$l_local_user_home\")",
+                    "(awk -v pat=\"$l_valid_shells\" -F: '$(NF) ~ pat { print $1 \" \"",
+                    "(NF-1) }' /etc/passwd)\"",
+                    "{#a_user_and_home[@]}\" # Here if we want to look at number of",
+                    "{#a_user_and_home[@]}\" -gt \"$l_maxsize\" ] && printf '%s \\n' \"\" \"  **",
+                    "l_asize \\\" Local interactive users found on the system\"  ( printf '%o' $(( 0777 & ~$l_mask)) )\"",
+                    "(( $l_mode & $l_mask )) -gt 0 ]; then",
+                    "l_hdfile \\\" is mode: \\\"$l_mode \\\" and",
+                    "l_max\\\" or more restrictive\"  l_hdfile \\\" to be mode: \\\"$l_max\\\" or more",
+                    "l_change\" \"$l_hdfile\"",
+                    "l_owner\" =~ ($l_user) ]]; then",
+                    "l_hdfile \\\" owned by: \\\"$l_owner \\\" and",
+                    "{l_user//|/ or } \\\"\"  l_hdfile \\\" to be owned by \\\"${l_user//|/ or",
+                    "l_user\" \"$l_hdfile\"",
+                    "l_gowner\" =~ ($l_group) ]]; then",
+                    "l_hdfile \\\" group owned by:",
+                    "l_gowner \\\" and should be group owned by \\\"${l_group//|/ or } \\\"\"  l_hdfile \\\" to be group owned by",
+                    "{l_group//|/ or } \\\"\"",
+                    "l_group\" \"$l_hdfile\"",
+                    "l_home\" ]; then",
+                    "(id -gn \"$l_user\" | xargs)\";l_group=\"${l_group// /|}\"",
+                    "'\\0' l_hdfile; do",
+                    "(basename \"$l_hdfile\")\" in",
+                    "l_hdfile \\\" exists\" \"    Page 991 Please review and manually delete this file\") ;;",
+                    "l_hdfile \\\" exists\") ;;",
+                    "l_hdfile\")",
+                    "l_home\" -xdev -type f -name '.*' -print0)",
+                    "{#a_dot_file[@]}\" -gt 0 ] && a_output2+=(\" - User: \\\"$l_user \\\" Home",
+                    "l_home \\\"\" \"${a_dot_file[@]}\")",
+                    "{#a_netrc_warn[@]}\" -gt 0 ] && a_output3+=(\" - User: \\\"$l_user \\\"",
+                    "l_home \\\"\" \"${a_netrc_warn[@]}\")",
+                    "(printf '%s \\n' \"${a_user_and_home[@]}\")\"",
+                    "{#a_output3[@]}\" -gt 0 ] && printf '%s \\n' \"\" \"  ** WARNING **\"",
+                    "{a_output3[@]}\" \"\"",
+                    "{#a_output2[@]}\" -gt 0 ] && printf ' %s\\n' \"\" \"${a_output2[@]}\"",
+                    "chmod",
+                    "chown"
+                ]
+            }
+        }
+    }
+}

@@ -5,7 +5,11 @@ import os
 import json
 from extract_rules import extract_text_from_pdf, extract_rules  # Import functions
 import toai
+<<<<<<< HEAD
 from motor.motor_asyncio import AsyncIOMotorClient 
+=======
+from motor.motor_asyncio import AsyncIOMotorClient  # Import Motor for MongoDB
+>>>>>>> a0bca60e9dbecb421826d8f24061de1141389b46
 
 app = FastAPI()
 
@@ -30,6 +34,22 @@ JSON_OUTPUT_DIRECTORY = "./json_output"
 # Create directories if they don't exist
 os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
 os.makedirs(JSON_OUTPUT_DIRECTORY, exist_ok=True)
+
+# MongoDB connection string
+MONGODB_URL = os.environ.get("MONGODB_URL", "mongodb://localhost:27017")
+
+# Initialize MongoDB client and database
+client = AsyncIOMotorClient(MONGODB_URL)
+db = client['my_database']  # Replace with your actual database name
+
+@app.get("/test-mongo-connection")
+async def test_mongo_connection():
+    try:
+        # The ping command is cheap and does not require auth.
+        await client.admin.command('ping')
+        return {"message": "MongoDB connection successful!"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # MongoDB connection string
 MONGODB_URL = os.environ.get("MONGODB_URL", "mongodb://localhost:27017")
@@ -125,11 +145,12 @@ async def query_sub_rules(rule_id: str):
     rule = extracted_rules.get(rule_id, None)
     if not rule:
         raise HTTPException(status_code=404, detail="Rule not found.")
-    
+
     # Return sub-rules if they exist
     sub_rules = [{"id": sub_id, "description": sub_data['title']} for sub_id, sub_data in rule['sub_rules'].items()]
     return {"sub_rules": sub_rules}
 
+<<<<<<< HEAD
 # Function to generate script for specific rule or all sub-rules if "all" is selected
 async def generate_script_for_rule(rule_id: str) -> str:
     global extracted_rules
@@ -178,6 +199,9 @@ async def generate_subrule_script(rule_id: str, sub_id: str) -> str:
     return toai_output
 
 # API to generate script for specific rule or all sub-rules if "all" is selected
+=======
+# API to generate script for specific rule
+>>>>>>> a0bca60e9dbecb421826d8f24061de1141389b46
 @app.post("/scripts/generate/query")
 async def generate_query_script(rule_ids: List[str], sub_rule_ids: List[str] = None):
     generated_scripts = []
@@ -199,6 +223,7 @@ async def generate_query_script(rule_ids: List[str], sub_rule_ids: List[str] = N
     
     return {"generated_scripts": generated_scripts}
 
+<<<<<<< HEAD
 # API to query a specific sub-rule by rule_id and sub_id, or all sub-rules if "all" is selected
 @app.get("/rules/{rule_id}/sub/{sub_id}")
 async def get_sub_rule_by_id(rule_id: str, sub_id: str):
@@ -209,6 +234,8 @@ async def get_sub_rule_by_id(rule_id: str, sub_id: str):
     # Otherwise, generate the script for the specific sub-rule
     return await generate_subrule_script(rule_id, sub_id)
 
+=======
+>>>>>>> a0bca60e9dbecb421826d8f24061de1141389b46
 # API to generate full script after file upload
 @app.post("/scripts/generate/full")
 async def generate_full_script(file: UploadFile = File(...)):
@@ -224,3 +251,36 @@ async def generate_full_script(file: UploadFile = File(...)):
         full_script += await generate_script_for_rule(rule_id)  # Generate script for the entire rule (including sub-rules)
     
     return {"combined_script": full_script}
+
+# New API to query a specific sub-rule by rule_id and sub_id
+@app.get("/rules/{rule_id}/sub/{sub_id}")
+async def get_sub_rule_by_id(rule_id: str, sub_id: str):
+    global extracted_rules
+
+    # Retrieve the main rule using the rule_id
+    rule = extracted_rules.get(rule_id, None)
+    if not rule:
+        raise HTTPException(status_code=404, detail="Rule not found.")
+    # Retrieve the sub-rule using the sub_id
+    sub_rule = rule['sub_rules'].get(sub_id, None)
+    if not sub_rule:
+        raise HTTPException(status_code=404, detail="Sub-rule not found.")
+
+    # Access the MongoDB collection
+    collection = db['sub_rule_scripts']
+
+    # Check if the script for this sub_rule is already in the database
+    script_doc = await collection.find_one({'sub_id': sub_id})
+
+    if script_doc and 'bash_script' in script_doc:
+        # Return the existing bash script from the database
+        return script_doc['bash_script']
+    else:
+        # Generate the bash script
+        toai_output = toai.generate_bash_script_together(sub_rule)
+
+        # Store the sub_rule id and the bash script in the database
+        await collection.insert_one({'sub_id': sub_id, 'bash_script': toai_output})
+
+        # Return the bash script
+        return {'bash_script': toai_output}
